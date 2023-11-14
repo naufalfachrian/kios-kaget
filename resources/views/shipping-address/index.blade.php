@@ -15,6 +15,8 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     @if(count($shippingAddresses) == 0)
                         <span>You don't have shipping address</span>
+                    @else
+                        {{ __('You have ') . count($shippingAddresses) . __(' shipping addresses') }}
                     @endif
                 </div>
             </div>

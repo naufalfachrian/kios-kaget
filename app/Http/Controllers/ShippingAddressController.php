@@ -32,7 +32,11 @@ class ShippingAddressController extends Controller
      */
     public function store(StoreShippingAddressRequest $request)
     {
-        //
+        $create = new ShippingAddress();
+        $create->fill($request->all());
+        $create->user()->associate(Auth::user());
+        $create->save();
+        return redirect()->route('shipping-addresses.index')->with(['success']);
     }
 
     /**
