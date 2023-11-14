@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostalCodeController;
 use App\Http\Controllers\SubDistrictController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,3 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/sub-district/search', [SubDistrictController::class, 'search']);
+Route::get('/postal-codes/search', [PostalCodeController::class, 'search']);

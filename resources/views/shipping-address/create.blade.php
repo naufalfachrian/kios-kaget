@@ -65,7 +65,22 @@
                         <div class="mb-4 grid lg:grid-cols-2 gap-4">
                             <div>
                                 <label for="postalCode" class="block text-gray-700 text-sm font-bold mb-2">Postal Code</label>
-                                <input type="text" id="postalCode" name="postalCode" class="w-full border rounded p-2">
+                                <input type="text" id="postalCode" name="postalCode" class="w-full border rounded p-2" x-model="inputPostalCode" @focus="postalCodeSuggestionActive=true">
+                                <div class="relative" x-show="postalCodeSuggestions.length > 0 && postalCodeSuggestionActive" x-cloak x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-y-90" x-transition:enter-end="opacity-100 transform scale-y-100" x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100 transform scale-y-100" x-transition:leave-end="opacity-0 transform scale-y-90">
+                                    <div class="absolute overflow-y-scroll h-auto max-h-96 top-100 mt-1 w-full border bg-white shadow-xl rounded-xl">
+                                        <div class="p-3">
+                                            <div class="" x-ref="list">
+                                                <template x-for="(suggestion, index) in postalCodeSuggestions" :key="index">
+                                                    <a x-bind:active="false"
+                                                       x-bind:class="{'p-2 flex block w-full rounded-xl hover:bg-gray-100 cursor-pointer': true}"
+                                                       x-on:click="selectPostalCode(suggestion)">
+                                                        <span x-text="suggestion.postal_code"></span>
+                                                    </a>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div>
                                 <label for="phoneNumber" class="block text-gray-700 text-sm font-bold mb-2">Phone Number</label>
@@ -91,9 +106,16 @@
                 subDistrictQuery: "",
                 subDistrictSuggestionActive: false,
                 subDistrictSuggestions: [],
+                postalCodeSuggestionActive: false,
+                postalCodeSuggestions: [],
                 selectedDistrictName: "",
                 selectedCityName: "",
                 selectedProvinceName: "",
+                selectedSubDistrictId: null,
+                selectedDistrictId: null,
+                selectedCityId: null,
+                selectedProvinceId: null,
+                inputPostalCode: "",
                 updateSubDistrictSuggestion() {
                     if (this.subDistrictQuery === '') {
                         this.subDistrictSuggestions = [];
@@ -106,11 +128,27 @@
                         })
                 },
                 selectSubDistrict(selected) {
+                    if (this.selectedSubDistrictId !== selected.id) {
+                        this.inputPostalCode = "";
+                    }
                     this.subDistrictSuggestionActive = false;
                     this.subDistrictQuery = selected.name;
                     this.selectedDistrictName = selected.district.name;
                     this.selectedCityName = selected.district.city.name;
                     this.selectedProvinceName = selected.district.city.province.name;
+                    this.selectedSubDistrictId = selected.id;
+                    this.selectedDistrictId = selected.district.id;
+                    this.selectedCityId = selected.district.city.id;
+                    this.selectedProvinceId = selected.district.city.province.id;
+                    fetch('/api/postal-codes/search?sub_district_id=' + this.selectedSubDistrictId)
+                        .then(response => response.json())
+                        .then(data => {
+                            this.postalCodeSuggestions = data;
+                        })
+                },
+                selectPostalCode(selected) {
+                    this.postalCodeSuggestionActive = false;
+                    this.inputPostalCode = selected.postal_code;
                 }
             }
         }
