@@ -121,7 +121,7 @@
                         this.subDistrictSuggestions = [];
                         return;
                     }
-                    fetch('/api/sub-district/search?query=' + this.subDistrictQuery + '&size=' + 80)
+                    fetch('/api/sub-districts/search?query=' + this.subDistrictQuery + '&size=' + 80)
                         .then(response => response.json())
                         .then(data => {
                             this.subDistrictSuggestions = data;

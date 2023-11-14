@@ -20,5 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/sub-district/search', [SubDistrictController::class, 'search']);
+Route::get('/sub-districts/search', [SubDistrictController::class, 'search']);
 Route::get('/postal-codes/search', [PostalCodeController::class, 'search']);
