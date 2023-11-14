@@ -28,7 +28,7 @@
                         <div class="mb-4 grid lg:grid-cols-2 gap-4">
                             <div @click.away="subDistrictSuggestionActive=false" @keydown.escape="subDistrictSuggestionActive=false">
                                 <label for="subDistrict" class="block text-gray-700 text-sm font-bold mb-2">Sub District</label>
-                                <input type="text" id="subDistrict" name="subDistrict" class="w-full border rounded p-2" x-model="subDistrictQuery" @input.debounce.500="updateSubDistrictSuggestion" @focus="subDistrictSuggestionActive=true;postalCodeSuggestionActive=false">
+                                <input type="text" id="subDistrict" name="subDistrict" class="w-full border rounded p-2" x-model="subDistrictQuery" @input="resetSubDistrict" @input.debounce.500="updateSubDistrictSuggestion" @focus="subDistrictSuggestionActive=true;postalCodeSuggestionActive=false">
                                 <div class="relative" x-show="subDistrictSuggestions.length > 0 && subDistrictSuggestionActive" x-cloak x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-y-90" x-transition:enter-end="opacity-100 transform scale-y-100" x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100 transform scale-y-100" x-transition:leave-end="opacity-0 transform scale-y-90">
                                     <div class="absolute overflow-y-scroll h-auto max-h-96 top-100 mt-1 w-full border bg-white shadow-xl rounded-xl">
                                         <div class="p-3">
@@ -144,11 +144,24 @@
                         .then(response => response.json())
                         .then(data => {
                             this.postalCodeSuggestions = data;
+                            if (data.length === 1) {
+                                this.selectPostalCode(data[0]);
+                            }
                         })
                 },
                 selectPostalCode(selected) {
                     this.postalCodeSuggestionActive = false;
                     this.inputPostalCode = selected.postal_code;
+                },
+                resetSubDistrict() {
+                    this.selectedDistrictName = "";
+                    this.selectedCityName = "";
+                    this.selectedProvinceName = "";
+                    this.inputPostalCode = "";
+                    this.selectedSubDistrictId = null;
+                    this.selectedDistrictId = null;
+                    this.selectedCityId = null;
+                    this.selectedProvinceId = null;
                 }
             }
         }
