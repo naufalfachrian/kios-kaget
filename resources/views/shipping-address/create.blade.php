@@ -22,23 +22,23 @@
                         @endif
                         @csrf
                         <div class="mb-4">
-                            <label for="label" class="block text-gray-700 text-sm font-bold mb-2">Label</label>
+                            <label for="label" class="block text-gray-700 text-sm font-bold mb-2">Label *</label>
                             <input type="text" id="label" name="label" class="w-full border rounded p-2" value="{{ old('label') }}">
                         </div>
 
                         <div class="mb-4">
-                            <label for="recipient" class="block text-gray-700 text-sm font-bold mb-2">Recipient Name</label>
+                            <label for="recipient" class="block text-gray-700 text-sm font-bold mb-2">Recipient Name *</label>
                             <input type="text" id="recipient" name="recipient_name" class="w-full border rounded p-2" value="{{ old('recipient_name') }}">
                         </div>
 
                         <div class="mb-4">
-                            <label for="address" class="block text-gray-700 text-sm font-bold mb-2">Address</label>
+                            <label for="address" class="block text-gray-700 text-sm font-bold mb-2">Address *</label>
                             <textarea id="address" name="address" rows="4" class="w-full border rounded p-2">{{ old('address') }}</textarea>
                         </div>
 
                         <div class="mb-4 grid lg:grid-cols-2 gap-4">
                             <div @click.away="subDistrictSuggestionActive=false" @keydown.escape="subDistrictSuggestionActive=false">
-                                <label for="subDistrict" class="block text-gray-700 text-sm font-bold mb-2">Sub District</label>
+                                <label for="subDistrict" class="block text-gray-700 text-sm font-bold mb-2">Sub District *</label>
                                 <input type="text" id="subDistrict" name="subDistrict" class="w-full border rounded p-2" value="{{ old('subDistrict') }}" x-model="subDistrictQuery" @input="resetSubDistrict" @input.debounce.500="updateSubDistrictSuggestion" @focus="subDistrictSuggestionActive=true;postalCodeSuggestionActive=false">
                                 <div class="relative" x-show="subDistrictSuggestions.length > 0 && subDistrictSuggestionActive" x-cloak x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-y-90" x-transition:enter-end="opacity-100 transform scale-y-100" x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100 transform scale-y-100" x-transition:leave-end="opacity-0 transform scale-y-90">
                                     <div class="absolute overflow-y-scroll h-auto max-h-96 top-100 mt-1 w-full border bg-white shadow-xl rounded-xl">
@@ -57,25 +57,25 @@
                                 </div>
                             </div>
                             <div>
-                                <label for="district" class="block text-gray-700 text-sm font-bold mb-2">District</label>
+                                <label for="district" class="block text-gray-700 text-sm font-bold mb-2">District *</label>
                                 <input type="text" readonly id="district" name="district" class="w-full border rounded p-2" value="{{ old('district') }}" x-model="selectedDistrictName">
                             </div>
                         </div>
 
                         <div class="mb-4 grid lg:grid-cols-2 gap-4">
                             <div>
-                                <label for="city" class="block text-gray-700 text-sm font-bold mb-2">City</label>
+                                <label for="city" class="block text-gray-700 text-sm font-bold mb-2">City *</label>
                                 <input type="text" readonly id="city" name="city" class="w-full border rounded p-2" value="{{ old('city') }}" x-model="selectedCityName">
                             </div>
                             <div>
-                                <label for="province" class="block text-gray-700 text-sm font-bold mb-2">Province</label>
+                                <label for="province" class="block text-gray-700 text-sm font-bold mb-2">Province *</label>
                                 <input type="text" readonly id="province" name="province" class="w-full border rounded p-2" value="{{ old('province') }}" x-model="selectedProvinceName">
                             </div>
                         </div>
 
                         <div class="mb-4 grid lg:grid-cols-2 gap-4">
                             <div @click.away="postalCodeSuggestionActive=false" @keydown.escape="postalCodeSuggestionActive=false">
-                                <label for="postalCode" class="block text-gray-700 text-sm font-bold mb-2">Postal Code</label>
+                                <label for="postalCode" class="block text-gray-700 text-sm font-bold mb-2">Postal Code *</label>
                                 <input type="text" id="postalCode" name="postal_code" class="w-full border rounded p-2" value="{{ old('postal_code') }}" x-model="inputPostalCode" @focus="subDistrictSuggestionActive=false;postalCodeSuggestionActive=true">
                                 <div class="relative" x-show="postalCodeSuggestions.length > 0 && postalCodeSuggestionActive" x-cloak x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-y-90" x-transition:enter-end="opacity-100 transform scale-y-100" x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100 transform scale-y-100" x-transition:leave-end="opacity-0 transform scale-y-90">
                                     <div class="absolute overflow-y-scroll h-auto max-h-96 top-100 mt-1 w-full border bg-white shadow-xl rounded-xl">
@@ -94,7 +94,7 @@
                                 </div>
                             </div>
                             <div>
-                                <label for="phoneNumber" class="block text-gray-700 text-sm font-bold mb-2">Phone Number</label>
+                                <label for="phoneNumber" class="block text-gray-700 text-sm font-bold mb-2">Phone Number *</label>
                                 <input type="tel" id="phoneNumber" name="phone_number" class="w-full border rounded p-2" value="{{ old('phone_number') }}">
                             </div>
                         </div>
