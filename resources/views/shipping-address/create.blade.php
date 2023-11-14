@@ -96,12 +96,12 @@
                 selectedProvinceName: "",
                 updateSubDistrictSuggestion() {
                     if (this.subDistrictQuery === '') {
+                        this.subDistrictSuggestions = [];
                         return;
                     }
                     fetch('/api/sub-district/search?query=' + this.subDistrictQuery + '&size=' + 80)
                         .then(response => response.json())
                         .then(data => {
-                            console.log(data.map(item => item.name));
                             this.subDistrictSuggestions = data;
                         })
                 },
