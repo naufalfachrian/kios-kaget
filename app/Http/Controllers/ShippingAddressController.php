@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Auth;
 
 class ShippingAddressController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(ShippingAddress::class);
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      */
