@@ -20,6 +20,9 @@ class ShippingAddressController extends Controller
      */
     public function index()
     {
+        if (Auth::user()->shippingAddresses->count() == 0) {
+            return redirect()->route('shipping-addresses.create');
+        }
         return view('shipping-address.index',[
             'shippingAddresses' => Auth::user()->shippingAddresses,
             'isAbleToAddShippingAddress' => Auth::user()->isAbleToAddShippingAddress(),
