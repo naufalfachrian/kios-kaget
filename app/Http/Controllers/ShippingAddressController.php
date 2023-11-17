@@ -24,7 +24,7 @@ class ShippingAddressController extends Controller
      */
     public function create()
     {
-        return view('shipping-address.create');
+        return view('shipping-address.form');
     }
 
     /**
@@ -52,7 +52,9 @@ class ShippingAddressController extends Controller
      */
     public function edit(ShippingAddress $shippingAddress)
     {
-        //
+        return view('shipping-address.form', [
+            'shippingAddress' => $shippingAddress
+        ]);
     }
 
     /**
@@ -60,7 +62,9 @@ class ShippingAddressController extends Controller
      */
     public function update(UpdateShippingAddressRequest $request, ShippingAddress $shippingAddress)
     {
-        //
+        $shippingAddress->fill($request->all());
+        $shippingAddress->save();
+        return redirect()->route('shipping-addresses.index')->with(['success']);
     }
 
     /**

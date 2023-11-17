@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Create New Shipping Address') }}
+            {{ isset($shippingAddress) ? __('Edit Shipping Address') : __('Create New Shipping Address') }}
         </h2>
     </x-slot>
 
@@ -9,7 +9,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <form class="mx-auto bg-white rounded p-6" x-data="shippingAddressForm()" action="{{route('shipping-addresses.store')}}" method="post">
+                    <form class="mx-auto bg-white rounded p-6" x-data="shippingAddressForm()"
+                          action="{{ isset($shippingAddress) ? route('shipping-addresses.update', ['shipping_address' => $shippingAddress->id]) : route('shipping-addresses.store') }}"
+                          method="post">
                         @if ($errors->any())
                             <div class="bg-red-200 p-4 rounded-xl mb-8">
                                 <h2 class="font-semibold text-xl leading-tight">{{__('Failed to save new shipping address')}}</h2>
@@ -20,26 +22,29 @@
                                 </ol>
                             </div>
                         @endif
+                        @if(isset($shippingAddress))
+                            @method('PATCH')
+                        @endif
                         @csrf
                         <div class="mb-4">
                             <label for="label" class="block text-gray-700 text-sm font-bold mb-2">Label *</label>
-                            <input type="text" id="label" name="label" class="w-full border rounded p-2" value="{{ old('label') }}">
+                            <input type="text" id="label" name="label" class="w-full border rounded p-2" value="{{ isset($shippingAddress) ? $shippingAddress->label : old('label') }}">
                         </div>
 
                         <div class="mb-4">
                             <label for="recipient" class="block text-gray-700 text-sm font-bold mb-2">Recipient Name *</label>
-                            <input type="text" id="recipient" name="recipient_name" class="w-full border rounded p-2" value="{{ old('recipient_name') }}">
+                            <input type="text" id="recipient" name="recipient_name" class="w-full border rounded p-2" value="{{ isset($shippingAddress) ? $shippingAddress->recipient_name : old('recipient_name') }}">
                         </div>
 
                         <div class="mb-4">
                             <label for="address" class="block text-gray-700 text-sm font-bold mb-2">Address *</label>
-                            <textarea id="address" name="address" rows="4" class="w-full border rounded p-2">{{ old('address') }}</textarea>
+                            <textarea id="address" name="address" rows="4" class="w-full border rounded p-2">{{ isset($shippingAddress) ? $shippingAddress->address : old('address') }}</textarea>
                         </div>
 
                         <div class="mb-4 grid lg:grid-cols-2 gap-4">
                             <div @click.away="subDistrictSuggestionActive=false" @keydown.escape="subDistrictSuggestionActive=false">
                                 <label for="subDistrict" class="block text-gray-700 text-sm font-bold mb-2">Sub District *</label>
-                                <input type="text" id="subDistrict" name="subDistrict" class="w-full border rounded p-2" value="{{ old('subDistrict') }}" x-model="subDistrictQuery" @input="resetSubDistrict" @input.debounce.500="updateSubDistrictSuggestion" @focus="subDistrictSuggestionActive=true;postalCodeSuggestionActive=false">
+                                <input type="text" id="subDistrict" name="subDistrict" class="w-full border rounded p-2" x-model="subDistrictQuery" @input="resetSubDistrict" @input.debounce.500="updateSubDistrictSuggestion" @focus="subDistrictSuggestionActive=true;postalCodeSuggestionActive=false">
                                 <div class="relative" x-show="subDistrictSuggestions.length > 0 && subDistrictSuggestionActive" x-cloak x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-y-90" x-transition:enter-end="opacity-100 transform scale-y-100" x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100 transform scale-y-100" x-transition:leave-end="opacity-0 transform scale-y-90">
                                     <div class="absolute overflow-y-scroll h-auto max-h-96 top-100 mt-1 w-full border bg-white shadow-xl rounded-xl">
                                         <div class="p-3">
@@ -95,13 +100,13 @@
                             </div>
                             <div>
                                 <label for="phoneNumber" class="block text-gray-700 text-sm font-bold mb-2">Phone Number *</label>
-                                <input type="tel" id="phoneNumber" name="phone_number" class="w-full border rounded p-2" value="{{ old('phone_number') }}">
+                                <input type="tel" id="phoneNumber" name="phone_number" class="w-full border rounded p-2" value="{{ isset($shippingAddress) ? $shippingAddress->phone_number : old('phone_number') }}">
                             </div>
                         </div>
 
                         <div class="mb-4">
                             <label for="landmark" class="block text-gray-700 text-sm font-bold mb-2">Note for Courier</label>
-                            <textarea id="landmark" name="landmark" rows="2" class="w-full border rounded p-2">{{ old('landmark') }}</textarea>
+                            <textarea id="landmark" name="landmark" rows="2" class="w-full border rounded p-2">{{ isset($shippingAddress) ? $shippingAddress->landmark : old('landmark') }}</textarea>
                         </div>
 
                         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Save</button>
@@ -119,19 +124,19 @@
     <script>
         function shippingAddressForm() {
             return {
-                subDistrictQuery: "{{ old('subDistrict') }}",
+                subDistrictQuery: "{{ isset($shippingAddress) ? $shippingAddress->subDistrict->name : old('subDistrict') }}",
                 subDistrictSuggestionActive: false,
                 subDistrictSuggestions: [],
                 postalCodeSuggestionActive: false,
                 postalCodeSuggestions: [],
-                selectedDistrictName: "{{ old('district') }}",
-                selectedCityName: "{{ old('city') }}",
-                selectedProvinceName: "{{ old('province') }}",
-                selectedSubDistrictId: "{{ old('sub_district_id') }}",
-                selectedDistrictId: "{{ old('district_id') }}",
-                selectedCityId: "{{ old('city_id') }}",
-                selectedProvinceId: "{{ old('province_id') }}",
-                inputPostalCode: "{{ old('postal_code') }}",
+                selectedDistrictName: "{{ isset($shippingAddress) ? $shippingAddress->district->name : old('district') }}",
+                selectedCityName: "{{ isset($shippingAddress) ? $shippingAddress->city->name : old('city') }}",
+                selectedProvinceName: "{{ isset($shippingAddress) ? $shippingAddress->province->name : old('province') }}",
+                selectedSubDistrictId: "{{ isset($shippingAddress) ? $shippingAddress->sub_district_id : old('sub_district_id') }}",
+                selectedDistrictId: "{{ isset($shippingAddress) ? $shippingAddress->district_id : old('district_id') }}",
+                selectedCityId: "{{ isset($shippingAddress) ? $shippingAddress->city_id : old('city_id') }}",
+                selectedProvinceId: "{{ isset($shippingAddress) ? $shippingAddress->province_id : old('province_id') }}",
+                inputPostalCode: "{{ isset($shippingAddress) ? $shippingAddress->postal_code : old('postal_code') }}",
                 updateSubDistrictSuggestion() {
                     if (this.subDistrictQuery === '') {
                         this.subDistrictSuggestions = [];
