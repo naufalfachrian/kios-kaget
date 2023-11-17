@@ -47,7 +47,7 @@
                             </div>
                             <div class="flex flex-col">
                                 <div>
-                                    <span class="text-sm bg-green-500 grow-0 rounded-lg p-1 text-white">
+                                    <span class="text-sm bg-green-500 grow-0 rounded p-1 text-white">
                                         {{ $shippingAddress->label }}
                                     </span>
                                 </div>
