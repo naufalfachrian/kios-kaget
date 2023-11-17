@@ -79,6 +79,7 @@ class ShippingAddressController extends Controller
      */
     public function destroy(ShippingAddress $shippingAddress)
     {
-        //
+        $shippingAddress->delete();
+        return redirect()->route('shipping-addresses.index')->with(['success']);
     }
 }
