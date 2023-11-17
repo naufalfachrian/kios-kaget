@@ -58,25 +58,25 @@
                             </div>
                             <div>
                                 <label for="district" class="block text-gray-700 text-sm font-bold mb-2">District *</label>
-                                <input type="text" readonly id="district" name="district" class="w-full border rounded p-2" value="{{ old('district') }}" x-model="selectedDistrictName">
+                                <input type="text" readonly id="district" name="district" class="w-full border rounded p-2" x-model="selectedDistrictName">
                             </div>
                         </div>
 
                         <div class="mb-4 grid lg:grid-cols-2 gap-4">
                             <div>
                                 <label for="city" class="block text-gray-700 text-sm font-bold mb-2">City *</label>
-                                <input type="text" readonly id="city" name="city" class="w-full border rounded p-2" value="{{ old('city') }}" x-model="selectedCityName">
+                                <input type="text" readonly id="city" name="city" class="w-full border rounded p-2" x-model="selectedCityName">
                             </div>
                             <div>
                                 <label for="province" class="block text-gray-700 text-sm font-bold mb-2">Province *</label>
-                                <input type="text" readonly id="province" name="province" class="w-full border rounded p-2" value="{{ old('province') }}" x-model="selectedProvinceName">
+                                <input type="text" readonly id="province" name="province" class="w-full border rounded p-2" x-model="selectedProvinceName">
                             </div>
                         </div>
 
                         <div class="mb-4 grid lg:grid-cols-2 gap-4">
                             <div @click.away="postalCodeSuggestionActive=false" @keydown.escape="postalCodeSuggestionActive=false">
                                 <label for="postalCode" class="block text-gray-700 text-sm font-bold mb-2">Postal Code *</label>
-                                <input type="text" id="postalCode" name="postal_code" class="w-full border rounded p-2" value="{{ old('postal_code') }}" x-model="inputPostalCode" @focus="subDistrictSuggestionActive=false;postalCodeSuggestionActive=true">
+                                <input type="text" id="postalCode" name="postal_code" class="w-full border rounded p-2" x-model="inputPostalCode" @focus="subDistrictSuggestionActive=false;postalCodeSuggestionActive=true">
                                 <div class="relative" x-show="postalCodeSuggestions.length > 0 && postalCodeSuggestionActive" x-cloak x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-y-90" x-transition:enter-end="opacity-100 transform scale-y-100" x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100 transform scale-y-100" x-transition:leave-end="opacity-0 transform scale-y-90">
                                     <div class="absolute overflow-y-scroll h-auto max-h-96 top-100 mt-1 w-full border bg-white shadow-xl rounded-xl">
                                         <div class="p-3">
@@ -106,10 +106,10 @@
 
                         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Save</button>
 
-                        <input type="hidden" name="sub_district_id" x-model="selectedSubDistrictId" value="{{ old('sub_district_id') }}"/>
-                        <input type="hidden" name="district_id" x-model="selectedDistrictId" value=" {{ old('district_id') }}"/>
-                        <input type="hidden" name="city_id" x-model="selectedCityId" value="{{ old('city_id') }}"/>
-                        <input type="hidden" name="province_id" x-model="selectedProvinceId" value="{{ old('province_id') }}"/>
+                        <input type="hidden" name="sub_district_id" x-model="selectedSubDistrictId"/>
+                        <input type="hidden" name="district_id" x-model="selectedDistrictId"/>
+                        <input type="hidden" name="city_id" x-model="selectedCityId"/>
+                        <input type="hidden" name="province_id" x-model="selectedProvinceId"/>
                     </form>
                 </div>
             </div>
@@ -119,19 +119,19 @@
     <script>
         function shippingAddressForm() {
             return {
-                subDistrictQuery: "",
+                subDistrictQuery: "{{ old('subDistrict') }}",
                 subDistrictSuggestionActive: false,
                 subDistrictSuggestions: [],
                 postalCodeSuggestionActive: false,
                 postalCodeSuggestions: [],
-                selectedDistrictName: "",
-                selectedCityName: "",
-                selectedProvinceName: "",
-                selectedSubDistrictId: null,
-                selectedDistrictId: null,
-                selectedCityId: null,
-                selectedProvinceId: null,
-                inputPostalCode: "",
+                selectedDistrictName: "{{ old('district') }}",
+                selectedCityName: "{{ old('city') }}",
+                selectedProvinceName: "{{ old('province') }}",
+                selectedSubDistrictId: "{{ old('sub_district_id') }}",
+                selectedDistrictId: "{{ old('district_id') }}",
+                selectedCityId: "{{ old('city_id') }}",
+                selectedProvinceId: "{{ old('province_id') }}",
+                inputPostalCode: "{{ old('postal_code') }}",
                 updateSubDistrictSuggestion() {
                     if (this.subDistrictQuery === '') {
                         this.subDistrictSuggestions = [];
