@@ -100,8 +100,8 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="note" class="block text-gray-700 text-sm font-bold mb-2">Note for Courier</label>
-                            <textarea id="note" name="note" rows="2" class="w-full border rounded p-2"></textarea>
+                            <label for="landmark" class="block text-gray-700 text-sm font-bold mb-2">Note for Courier</label>
+                            <textarea id="landmark" name="landmark" rows="2" class="w-full border rounded p-2">{{ old('landmark') }}</textarea>
                         </div>
 
                         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Save</button>
