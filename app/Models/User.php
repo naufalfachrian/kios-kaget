@@ -48,4 +48,8 @@ class User extends Authenticatable
     public function shippingAddresses(): HasMany {
         return $this->hasMany(ShippingAddress::class);
     }
+
+    public function isAbleToAddShippingAddress(): bool {
+        return $this->shippingAddresses()->get()->count() < env('MAX_USER_SHIPPING_ADDRESS', 4);
+    }
 }

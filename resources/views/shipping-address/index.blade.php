@@ -3,14 +3,16 @@
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Shipping Address') }}
         </h2>
+        @if($isAbleToAddShippingAddress)
         <x-primary-button-link class="ml-auto" href="{{ route('shipping-addresses.create') }}"
-                         x-data="">
+                               x-data="">
             {{ __('Add Shipping Address') }}
         </x-primary-button-link>
+        @endif
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 gap-4 flex flex-col">
             @if(count($shippingAddresses) == 0)
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
@@ -18,6 +20,16 @@
                 </div>
             </div>
             @else
+                @if(!$isAbleToAddShippingAddress)
+                <div class="bg-blue-500 shadow sm:rounded-lg">
+                    <div class="p-4 text-white flex flex-row gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                        </svg>
+                        <span>You have used all of your shipping address slot.</span>
+                    </div>
+                </div>
+                @endif
                 <div class="gap-4 grid lg:grid-cols-2">
                     @foreach($shippingAddresses as $shippingAddress)
                         <div class="bg-white shadow sm:rounded-lg p-6 relative">

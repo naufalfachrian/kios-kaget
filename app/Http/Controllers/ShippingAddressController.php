@@ -15,7 +15,8 @@ class ShippingAddressController extends Controller
     public function index()
     {
         return view('shipping-address.index',[
-            'shippingAddresses' => Auth::user()->shippingAddresses
+            'shippingAddresses' => Auth::user()->shippingAddresses,
+            'isAbleToAddShippingAddress' => Auth::user()->isAbleToAddShippingAddress(),
         ]);
     }
 
