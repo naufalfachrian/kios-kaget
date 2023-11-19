@@ -45,11 +45,23 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function shippingAddresses(): HasMany {
+    public function shippingAddresses(): HasMany
+    {
         return $this->hasMany(ShippingAddress::class);
     }
 
-    public function isAbleToAddShippingAddress(): bool {
+    public function permissions(): HasMany
+    {
+        return $this->hasMany(Permission::class);
+    }
+
+    public function isAbleToAddShippingAddress(): bool
+    {
         return $this->shippingAddresses()->get()->count() < env('MAX_USER_SHIPPING_ADDRESS', 4);
+    }
+
+    public function hasPermission(string $permissionLabel): bool
+    {
+        return $this->permissions()->where('label', '=', $permissionLabel)->count() > 0;
     }
 }
