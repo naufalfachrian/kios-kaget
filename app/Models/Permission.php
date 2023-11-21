@@ -12,6 +12,8 @@ class Permission extends Model
 
     static $PRODUCT_MASTER = "PRODUCT_MASTER";
 
+    static $ADMINISTRATOR_ACCESS = "ADMINISTRATOR_ACCESS";
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

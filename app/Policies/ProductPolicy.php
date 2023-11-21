@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Permission;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -13,7 +14,7 @@ class ProductPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->hasPermission(Permission::$ADMINISTRATOR_ACCESS) && $user->hasPermission(Permission::$PRODUCT_MASTER);
     }
 
     /**
@@ -21,7 +22,7 @@ class ProductPolicy
      */
     public function view(User $user, Product $product): bool
     {
-        //
+        return $user->hasPermission(Permission::$ADMINISTRATOR_ACCESS) && $user->hasPermission(Permission::$PRODUCT_MASTER);
     }
 
     /**
@@ -29,7 +30,7 @@ class ProductPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->hasPermission(Permission::$ADMINISTRATOR_ACCESS) && $user->hasPermission(Permission::$PRODUCT_MASTER);
     }
 
     /**
@@ -37,7 +38,7 @@ class ProductPolicy
      */
     public function update(User $user, Product $product): bool
     {
-        //
+        return $user->hasPermission(Permission::$ADMINISTRATOR_ACCESS) && $user->hasPermission(Permission::$PRODUCT_MASTER);
     }
 
     /**
@@ -45,7 +46,7 @@ class ProductPolicy
      */
     public function delete(User $user, Product $product): bool
     {
-        //
+        return $user->hasPermission(Permission::$ADMINISTRATOR_ACCESS) && $user->hasPermission(Permission::$PRODUCT_MASTER);
     }
 
     /**
@@ -53,7 +54,7 @@ class ProductPolicy
      */
     public function restore(User $user, Product $product): bool
     {
-        //
+        return $user->hasPermission(Permission::$ADMINISTRATOR_ACCESS) && $user->hasPermission(Permission::$PRODUCT_MASTER);
     }
 
     /**
@@ -61,6 +62,6 @@ class ProductPolicy
      */
     public function forceDelete(User $user, Product $product): bool
     {
-        //
+        return $user->hasPermission(Permission::$ADMINISTRATOR_ACCESS) && $user->hasPermission(Permission::$PRODUCT_MASTER);
     }
 }

@@ -8,12 +8,19 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(Product::class);
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return view('products.index');
     }
 
     /**
@@ -21,7 +28,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.form');
     }
 
     /**
