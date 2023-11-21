@@ -23,7 +23,7 @@ class ShippingAddressController extends Controller
         if (Auth::user()->shippingAddresses->count() == 0) {
             return redirect()->route('shipping-addresses.create');
         }
-        return view('shipping-address.index',[
+        return view('shipping-addresses.index',[
             'shippingAddresses' => Auth::user()->shippingAddresses,
             'isAbleToAddShippingAddress' => Auth::user()->isAbleToAddShippingAddress(),
         ]);
@@ -34,7 +34,7 @@ class ShippingAddressController extends Controller
      */
     public function create()
     {
-        return view('shipping-address.form');
+        return view('shipping-addresses.form');
     }
 
     /**
@@ -62,7 +62,7 @@ class ShippingAddressController extends Controller
      */
     public function edit(ShippingAddress $shippingAddress)
     {
-        return view('shipping-address.form', [
+        return view('shipping-addresses.form', [
             'shippingAddress' => $shippingAddress
         ]);
     }
