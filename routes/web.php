@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShippingAddressController;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('shipping-addresses', ShippingAddressController::class);
     Route::resource('products', ProductController::class);
+    Route::resource('product-images', ProductImageController::class);
 });
 
 require __DIR__.'/auth.php';

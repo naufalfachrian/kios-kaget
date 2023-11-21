@@ -65,7 +65,7 @@
             </div>
         </div>
         <x-modal name="product-image-form" focusable>
-            <form method="post" x-ref="form" class="p-6">
+            <form method="post" x-ref="form" class="p-6" x-on:submit.prevent="submitProductImage()">
                 @csrf
 
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
@@ -79,7 +79,7 @@
                     <div class="flex flex-col grow">
                         <div class="mb-4">
                             <label for="image_name" class="block text-gray-700 text-sm font-bold mb-2">Image Label *</label>
-                            <input type="text" id="image_name" name="image_name" class="w-full border rounded p-2">
+                            <input type="text" id="image_name" name="image_name" class="w-full border rounded p-2" x-model="productImageName">
                         </div>
 
                         <div class="mb-4">
@@ -91,7 +91,11 @@
                 </div>
 
                 <div class="mt-6 flex gap-3">
-                    <x-primary-button x-on:click="$dispatch('close')">
+                    <x-primary-button class='{cursor-not-allowed: !isUploadingProductImage}'>
+                        <svg :class="{hidden: !isUploadingProductImage}" class="animate-spin -ml-1 mr-3 h-3 w-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
                         {{ __('Save') }}
                     </x-primary-button>
 
@@ -111,10 +115,10 @@
         function productForm() {
             return {
                 inputProductImageSource: null,
+                productImageName: null,
+                isUploadingProductImage: false,
                 reloadPreviewProductImage() {
-                    console.log('reload-preview-product-image-called')
                     let file = this.$refs.image_file.files[0];
-                    console.log('file received')
                     if(!file || file.type.indexOf('image/') === -1) return;
                     this.inputProductImageSource = null;
                     let reader = new FileReader();
@@ -122,6 +126,28 @@
                         this.inputProductImageSource = e.target.result;
                     }
                     reader.readAsDataURL(file);
+                },
+                submitProductImage() {
+                    this.isUploadingProductImage = true;
+                    console.log("Submit product image");
+                    let file = this.$refs.image_file.files[0];
+                    if(!file || file.type.indexOf('image/') === -1) {
+                        this.isUploadingProductImage = false;
+                        return
+                    }
+                    const formData = new FormData();
+                    formData.append('image', file);
+                    formData.append('image_name', this.productImageName);
+                    fetch('{{ route('product-images.store') }}', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'x-csrf-token': '{{ csrf_token() }}'
+                        }
+                    }).then( response => {
+                        this.isUploadingProductImage = false;
+                        console.log(response);
+                    });
                 }
             }
         }

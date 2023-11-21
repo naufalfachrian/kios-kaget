@@ -4,6 +4,7 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\ShippingAddress;
 use App\Policies\ProductPolicy;
 use App\Policies\ShippingAddressPolicy;
@@ -19,6 +20,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         ShippingAddress::class => ShippingAddressPolicy::class,
         Product::class => ProductPolicy::class,
+        ProductImage::class => ProductPolicy::class,
     ];
 
     /**

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('product_images', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('product_id')->nullable();
-            $table->string('image_name');
+            $table->string('image_name')->nullable();
             $table->string('image_url');
             $table->timestamps();
 
