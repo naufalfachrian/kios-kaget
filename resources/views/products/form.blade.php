@@ -22,39 +22,50 @@
                         <h3 class="block text-gray-700 text-sm font-bold mb-2">Product Image</h3>
                         <div class="grid md:grid-cols-4 grid-cols-2 gap-4 mb-4">
                             <template x-for="productImage in productImages">
-                                <div class="aspect-square overflow-clip rounded-lg border-gray-500 border-2 border-dashed flex items-center justify-center hover:cursor-pointer"
-                                     x-on:click.prevent="$dispatch('open-modal', 'product-image-form');"
+                                <div
+                                    class="aspect-square overflow-clip rounded-lg border-gray-500 border-2 border-dashed flex items-center justify-center hover:cursor-pointer"
+                                    x-on:click.prevent="$dispatch('open-modal', 'product-image-form');"
                                 >
-                                    <img class="rounded-lg" :src="productImage.image_url" />
+                                    <img class="rounded-lg" :src="productImage.image_url"/>
                                 </div>
                             </template>
-                            <div class="aspect-square rounded-lg border-gray-500 border-2 border-dashed flex items-center justify-center hover:cursor-pointer"
-                                 x-on:click.prevent="$dispatch('open-modal', 'product-image-form');"
+                            <div
+                                class="aspect-square rounded-lg border-gray-500 border-2 border-dashed flex items-center justify-center hover:cursor-pointer"
+                                x-on:click.prevent="$dispatch('open-modal', 'product-image-form');"
                             >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
                                 </svg>
                             </div>
                         </div>
                         <div class="mb-4">
                             <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Name *</label>
-                            <input type="text" id="name" name="name" class="w-full border rounded p-2" value="{{ isset($product) ? $product->name : old('name') }}">
+                            <input type="text" id="name" name="name" class="w-full border rounded p-2"
+                                   value="{{ isset($product) ? $product->name : old('name') }}">
                         </div>
                         <div class="mb-4 grid lg:grid-cols-2 gap-4">
                             <div>
                                 <label for="price" class="block text-gray-700 text-sm font-bold mb-2">Price *</label>
-                                <input type="number" id="price" name="price" class="w-full border rounded p-2" value="{{ isset($product) ? $product->price : old('price') }}">
+                                <input type="number" id="price" name="price" class="w-full border rounded p-2"
+                                       value="{{ isset($product) ? $product->price : old('price') }}">
                             </div>
                             <div>
-                                <label for="weight_in_grams" class="block text-gray-700 text-sm font-bold mb-2">Weight (in grams) *</label>
-                                <input type="number" id="weight_in_grams" name="weight_in_grams" class="w-full border rounded p-2" value="{{ isset($product) ? $product->weight_in_grams : old('weight_in_grams') }}">
+                                <label for="weight_in_grams" class="block text-gray-700 text-sm font-bold mb-2">Weight
+                                    (in grams) *</label>
+                                <input type="number" id="weight_in_grams" name="weight_in_grams"
+                                       class="w-full border rounded p-2"
+                                       value="{{ isset($product) ? $product->weight_in_grams : old('weight_in_grams') }}">
                             </div>
                         </div>
                         <div class="mb-4">
-                            <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Description</label>
-                            <textarea id="description" name="description" rows="4" class="w-full border rounded p-2">{{ isset($product) ? $product->description : old('description') }}</textarea>
+                            <label for="description"
+                                   class="block text-gray-700 text-sm font-bold mb-2">Description</label>
+                            <textarea id="description" name="description" rows="4"
+                                      class="w-full border rounded p-2">{{ isset($product) ? $product->description : old('description') }}</textarea>
                         </div>
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Save</button>
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Save
+                        </button>
                     </form>
                 </div>
             </div>
@@ -69,19 +80,24 @@
 
                 <div class="lg:grid lg:grid-cols-2 flex flex-col gap-3">
 
-                    <div class="w-full overflow-clip aspect-square border border-dashed border-gray-500 rounded-lg auto bg-clip-padding flex items-center justify-center">
-                        <img class="rounded-lg" :src="inputProductImageSource" />
+                    <div
+                        class="w-full overflow-clip aspect-square border border-dashed border-gray-500 rounded-lg auto bg-clip-padding flex items-center justify-center">
+                        <img class="rounded-lg" :src="inputProductImageSource"/>
                     </div>
 
                     <div class="flex flex-col grow">
                         <div class="mb-4">
-                            <label for="image_name" class="block text-gray-700 text-sm font-bold mb-2">Image Label *</label>
-                            <input type="text" id="image_name" name="image_name" class="w-full border rounded p-2" x-model="productImageName">
+                            <label for="image_name" class="block text-gray-700 text-sm font-bold mb-2">Image Label
+                                *</label>
+                            <input type="text" id="image_name" name="image_name" class="w-full border rounded p-2"
+                                   x-model="productImageName">
                         </div>
 
                         <div class="mb-4">
-                            <label for="image_file" class="block text-gray-700 text-sm font-bold mb-2">Upload Image *</label>
-                            <input type="file" accept="image/jpeg" id="image_file" name="image_file" x-ref="image_file" class="w-full border rounded p-2" x-on:change="reloadPreviewProductImage()">
+                            <label for="image_file" class="block text-gray-700 text-sm font-bold mb-2">Upload Image
+                                *</label>
+                            <input type="file" accept="image/jpeg" id="image_file" name="image_file" x-ref="image_file"
+                                   class="w-full border rounded p-2" x-on:change="reloadPreviewProductImage()">
                         </div>
                     </div>
 
@@ -91,9 +107,13 @@
                     <button :class="{'cursor-not-allowed': isUploadingProductImage || inputProductImageSource === null}"
                             :disabled="isUploadingProductImage || inputProductImageSource === null"
                             class="inline-flex flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 disabled:opacity-25">
-                        <svg :class="{hidden: !isUploadingProductImage}" class="animate-spin -ml-1 mr-3 h-3 w-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        <svg :class="{hidden: !isUploadingProductImage}"
+                             class="animate-spin -ml-1 mr-3 h-3 w-3 text-white" xmlns="http://www.w3.org/2000/svg"
+                             fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor"
+                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
                         {{ __('Save') }}
                     </button>
@@ -119,7 +139,7 @@
                 productImages: [],
                 reloadPreviewProductImage() {
                     let file = this.$refs.image_file.files[0];
-                    if(!file || file.type.indexOf('image/') === -1) return;
+                    if (!file || file.type.indexOf('image/') === -1) return;
                     this.inputProductImageSource = null;
                     let reader = new FileReader();
                     reader.onload = e => {
@@ -131,7 +151,7 @@
                     this.isUploadingProductImage = true;
                     console.log("Submit product image");
                     let file = this.$refs.image_file.files[0];
-                    if(!file || file.type.indexOf('image/') === -1) {
+                    if (!file || file.type.indexOf('image/') === -1) {
                         this.isUploadingProductImage = false;
                         return
                     }
@@ -144,7 +164,7 @@
                         headers: {
                             'x-csrf-token': '{{ csrf_token() }}'
                         }
-                    }).then(response => response.json()).then( response => {
+                    }).then(response => response.json()).then(response => {
                         this.reset();
                         this.productImages.push(response)
                     });
