@@ -17,7 +17,7 @@
                         @endif
                         @csrf
                         <template x-for="productImage in productImages">
-                            <input hidden name="product_images[]" :value="productImage.id">
+                            <input hidden name="product_images[]" :value="productImage.id"/>
                         </template>
                         <h3 class="block text-gray-700 text-sm font-bold mb-2">Product Image</h3>
                         <div class="grid md:grid-cols-4 grid-cols-2 gap-4 mb-4">
@@ -87,8 +87,8 @@
 
                     <div class="flex flex-col grow">
                         <div class="mb-4">
-                            <label for="image_name" class="block text-gray-700 text-sm font-bold mb-2">Image Label
-                                *</label>
+                            <label for="image_name" class="block text-gray-700 text-sm font-bold mb-2">Image
+                                Label</label>
                             <input type="text" id="image_name" name="image_name" class="w-full border rounded p-2"
                                    x-model="productImageName">
                         </div>
@@ -157,7 +157,9 @@
                     }
                     const formData = new FormData();
                     formData.append('image', file);
-                    formData.append('image_name', this.productImageName);
+                    if (this.productImageName != null) {
+                        formData.append('image_name', this.productImageName);
+                    }
                     fetch('{{ route('product-images.store') }}', {
                         method: 'POST',
                         body: formData,
@@ -167,14 +169,15 @@
                     }).then(response => response.json()).then(response => {
                         this.reset();
                         this.productImages.push(response)
+                        console.log(response)
                     });
                 },
                 reset() {
                     this.$dispatch('close');
+                    this.$refs.productImageForm.reset();
                     this.inputProductImageSource = null;
                     this.productImageName = null;
                     this.isUploadingProductImage = false;
-                    this.$refs.productImageForm.reset();
                 }
             }
         }
