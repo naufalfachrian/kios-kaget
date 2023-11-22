@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use App\Models\ProductImage;
 
 class ProductController extends Controller
 {
@@ -36,7 +37,17 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        $create = new Product();
+        $create->fill($request->only($create->getFillable()));
+        $create->save();
+        $product_images = $request->get('product_images');
+        foreach ($product_images as $product_image_id) {
+            $product_image = ProductImage::query()->where('id', '=', $product_image_id)->first();
+            if ($product_image != null) {
+                $create->images()->save($product_image);
+            }
+        }
+        return redirect()->route('products.index')->with(['success']);
     }
 
     /**
