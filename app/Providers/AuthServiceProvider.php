@@ -6,6 +6,7 @@ namespace App\Providers;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\ShippingAddress;
+use App\Policies\ProductImagePolicy;
 use App\Policies\ProductPolicy;
 use App\Policies\ShippingAddressPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -20,7 +21,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         ShippingAddress::class => ShippingAddressPolicy::class,
         Product::class => ProductPolicy::class,
-        ProductImage::class => ProductPolicy::class,
+        ProductImage::class => ProductImagePolicy::class,
     ];
 
     /**

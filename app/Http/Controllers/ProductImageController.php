@@ -69,24 +69,18 @@ class ProductImageController extends Controller
      */
     public function update(UpdateProductImageRequest $request, ProductImage $productImage)
     {
+        $productImage->update([
+            'product_id' => $request->input('product_id'),
+            'image_name' => $request->get('image_name'),
+        ]);
         if ($request->hasFile('image')) {
-            // Delete old image
             Storage::disk('public')->delete(str_replace('/storage', '', $productImage->image_url));
-
-            // Upload new image
             $imagePath = $request->file('image')->store('product_images', 'public');
-
             $productImage->update([
-                'product_id' => $request->input('product_id'),
-                'image_name' => $request->get('image_name') ?? $request->file('image')->getClientOriginalName(),
                 'image_url' => Storage::url($imagePath),
             ]);
-        } else {
-            $productImage->update([
-                'product_id' => $request->input('product_id'),
-            ]);
         }
-
+        $productImage->save();
         return response()->json($productImage, 200);
     }
 
