@@ -19,7 +19,7 @@
                         <template x-for="productImage in productImages">
                             <input hidden name="product_images[]" :value="productImage.id"/>
                         </template>
-                        <h3 class="block text-gray-700 text-sm font-bold mb-2">Product Image</h3>
+                        <h3 class="block text-gray-700 text-sm font-bold mb-2">Product Image *</h3>
                         <div class="grid md:grid-cols-4 grid-cols-2 gap-4 mb-4">
                             <template x-for="productImage in productImages">
                                 <div
@@ -64,7 +64,9 @@
                             <textarea id="description" name="description" rows="4"
                                       class="w-full border rounded p-2">{{ isset($product) ? $product->description : old('description') }}</textarea>
                         </div>
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Save
+                        <button type="submit"
+                                class="flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 disabled:opacity-25">
+                            {{ __('Save') }}
                         </button>
                     </form>
                 </div>
