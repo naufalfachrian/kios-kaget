@@ -16,26 +16,21 @@
                             @method('PATCH')
                         @endif
                         @csrf
+                        <template x-for="productImage in productImages">
+                            <input hidden name="product_images[]" :value="productImage.id">
+                        </template>
                         <h3 class="block text-gray-700 text-sm font-bold mb-2">Product Image</h3>
                         <div class="grid md:grid-cols-4 grid-cols-2 gap-4 mb-4">
-                            <div class="bg-blue-50 aspect-square rounded-lg border-gray-300 border-2 flex items-center justify-center hover:cursor-pointer"
+                            <template x-for="productImage in productImages">
+                                <div class="aspect-square overflow-clip rounded-lg border-gray-500 border-2 border-dashed flex items-center justify-center hover:cursor-pointer"
+                                     x-on:click.prevent="$dispatch('open-modal', 'product-image-form');"
+                                >
+                                    <img class="rounded-lg" :src="productImage.image_url" />
+                                </div>
+                            </template>
+                            <div class="aspect-square rounded-lg border-gray-500 border-2 border-dashed flex items-center justify-center hover:cursor-pointer"
                                  x-on:click.prevent="$dispatch('open-modal', 'product-image-form');"
                             >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                </svg>
-                            </div>
-                            <div class="bg-blue-50 aspect-square rounded-lg border-gray-300 border-2 flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                </svg>
-                            </div>
-                            <div class="bg-blue-50 aspect-square rounded-lg border-gray-300 border-2 flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                </svg>
-                            </div>
-                            <div class="bg-blue-50 aspect-square rounded-lg border-gray-300 border-2 flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                 </svg>
@@ -74,7 +69,7 @@
 
                 <div class="lg:grid lg:grid-cols-2 flex flex-col gap-3">
 
-                    <div class="w-full aspect-square border border-dashed border-gray-500 rounded-lg auto bg-clip-padding">
+                    <div class="w-full overflow-clip aspect-square border border-dashed border-gray-500 rounded-lg auto bg-clip-padding flex items-center justify-center">
                         <img class="rounded-lg" :src="inputProductImageSource" />
                     </div>
 
@@ -121,6 +116,7 @@
                 inputProductImageSource: null,
                 productImageName: null,
                 isUploadingProductImage: false,
+                productImages: [],
                 reloadPreviewProductImage() {
                     let file = this.$refs.image_file.files[0];
                     if(!file || file.type.indexOf('image/') === -1) return;
@@ -148,9 +144,9 @@
                         headers: {
                             'x-csrf-token': '{{ csrf_token() }}'
                         }
-                    }).then( response => {
+                    }).then(response => response.json()).then( response => {
                         this.reset();
-                        console.log(response);
+                        this.productImages.push(response)
                     });
                 },
                 reset() {
