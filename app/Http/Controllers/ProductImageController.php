@@ -89,12 +89,8 @@ class ProductImageController extends Controller
      */
     public function destroy(ProductImage $productImage)
     {
-        // Delete image file
         Storage::disk('public')->delete(str_replace('/storage', '', $productImage->image_url));
-
-        // Delete database record
         $productImage->delete();
-
         return response()->json(null, 204);
     }
 }
