@@ -190,6 +190,7 @@
                         method: 'POST',
                         body: formData,
                         headers: {
+                            'Accept': 'application/json',
                             'x-csrf-token': '{{ csrf_token() }}'
                         }
                     }).then(response => response.json()).then(response => {
@@ -211,6 +212,7 @@
                         method: 'POST',
                         body: formData,
                         headers: {
+                            'Accept': 'application/json',
                             'x-csrf-token': '{{ csrf_token() }}',
                         }
                     }).then(response => response.json()).then(response => {
@@ -226,6 +228,7 @@
                     fetch('{{ route('product-images.store') }}/' + productImageId + '?_method=DELETE', {
                         method: 'POST',
                         headers: {
+                            'Accept': 'application/json',
                             'x-csrf-token': '{{ csrf_token() }}',
                         }
                     }).then(response => response.text()).then(response => {

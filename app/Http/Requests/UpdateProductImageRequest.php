@@ -27,7 +27,7 @@ class UpdateProductImageRequest extends FormRequest
     {
         return [
             'product_id' => 'nullable|exists:products,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
         ];
     }
 }
