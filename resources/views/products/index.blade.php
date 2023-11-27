@@ -9,7 +9,39 @@
         </x-primary-button-link>
     </x-slot>
 
-    <script>
+    <div class="py-12" x-data="deleteProductForm()">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 gap-4 flex flex-col">
+            @if(count($products) == 0)
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
+                <div class="p-6 text-gray-900 dark:text-gray-100">
+                    <span>You don't have products</span>
+                </div>
+            </div>
+            @else
+            <div class="gap-4 grid lg:grid-cols-4 md:grid-cols-2">
+                @foreach($products as $product)
+                <div class="bg-white shadow sm:rounded-lg relative overflow-hidden">
+                    <div
+                        class="w-full aspect-square auto flex items-center justify-center">
+                        @if(count($product->images) > 0)
+                        <img class="" src="{{$product->images[0]->image_url}}"/>
+                        @endif
+                    </div>
+                    <div class="p-4">
+                        <span class="font-semibold text-gray-800 text-lg">{{ $product->name }}</span>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            {{ $products->onEachSide(5)->links() }}
+            @endif
+        </div>
+    </div>
 
+    <script>
+        function deleteProductForm() {
+            return {
+            }
+        }
     </script>
 </x-app-layout>
