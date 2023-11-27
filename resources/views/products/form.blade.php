@@ -11,7 +11,8 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <form class="mx-auto bg-white rounded p-6"
                           action="{{ isset($product) ? route('products.update', ['products' => $product->id]) : route('products.store') }}"
-                          method="post">
+                          x-on:submit.prevent="submitProduct()"
+                          x-ref="productForm">
                         @if(isset($product))
                             @method('PATCH')
                         @endif
@@ -65,7 +66,17 @@
                                       class="w-full border rounded p-2">{{ isset($product) ? $product->description : old('description') }}</textarea>
                         </div>
                         <button type="submit"
+                                :class="{'cursor-not-allowed': isSubmittingProduct}"
+                                :disabled="isSubmittingProduct"
                                 class="flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 disabled:opacity-25">
+                            <svg :hidden="!isSubmittingProduct"
+                                 class="animate-spin -ml-1 mr-3 h-3 w-3 text-white" xmlns="http://www.w3.org/2000/svg"
+                                 fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
                             {{ __('Save') }}
                         </button>
                     </form>
@@ -157,6 +168,27 @@
                 isDeletingProductImage: false,
                 productImages: [],
                 selectedProductImage: null,
+                isSubmittingProduct: false,
+                submitProduct() {
+                    this.isSubmittingProduct = true;
+                    fetch(this.$refs.productForm.action, {
+                        method: 'POST',
+                        body: new FormData(this.$refs.productForm),
+                        headers: {
+                            'Accept': 'application/json',
+                            'x-csrf-token': '{{ csrf_token() }}'
+                        }
+                    }).then(response => {
+                        this.isSubmittingProduct = false;
+                        if (response.status === 201) {
+                            while (this.productImages.length) {
+                                this.productImages.pop();
+                            }
+                            this.resetProductImageForm();
+                            this.$refs.productForm.reset();
+                        }
+                    });
+                },
                 reloadPreviewProductImage() {
                     let file = this.$refs.image_file.files[0];
                     if (!file || file.type.indexOf('image/') === -1) return;

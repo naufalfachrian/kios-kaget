@@ -40,15 +40,18 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $create = new Product();
-        $create->fill($request->only($create->getFillable()));
-        $create->save();
+        $product = new Product();
+        $product->fill($request->only($product->getFillable()));
+        $product->save();
         $product_images = $request->get('product_images');
         foreach ($product_images as $product_image_id) {
             $product_image = ProductImage::query()->where('id', '=', $product_image_id)->first();
             if ($product_image != null) {
-                $create->images()->save($product_image);
+                $product->images()->save($product_image);
             }
+        }
+        if ($request->acceptsJson()) {
+            return response()->json($product, 201);
         }
         return redirect()->route('products.index')->with(['success']);
     }
