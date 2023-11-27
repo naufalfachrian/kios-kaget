@@ -18,7 +18,7 @@
                 </div>
             </div>
             @else
-            <div class="gap-4 grid lg:grid-cols-4 md:grid-cols-2">
+            <div class="gap-4 grid lg:grid-cols-6 sm:grid-cols-4 grid-cols-2">
                 @foreach($products as $product)
                 <div class="bg-white shadow sm:rounded-lg relative overflow-hidden">
                     <div
@@ -27,8 +27,9 @@
                         <img class="" src="{{$product->images[0]->image_url}}"/>
                         @endif
                     </div>
-                    <div class="p-4">
-                        <span class="font-semibold text-gray-800 text-lg">{{ $product->name }}</span>
+                    <div class="p-2 flex flex-col">
+                        <span class="font-light text-gray-800 text-sm">{{ $product->name }}</span>
+                        <span class="font-semibold text-gray-800 text-md">{{ $product->formattedPrice() }}</span>
                     </div>
                 </div>
                 @endforeach
