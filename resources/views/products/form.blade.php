@@ -67,15 +67,15 @@
                         <div class="mb-4 grid lg:grid-cols-2 gap-4">
                             <div>
                                 <label for="price" class="block text-gray-700 text-sm font-bold mb-2">Price *</label>
-                                <input type="number" id="price" name="price" class="w-full border rounded p-2"
-                                       value="{{ isset($product) ? $product->price : old('price') }}">
+                                <input type="text" id="price" name="price" class="w-full border rounded p-2"
+                                       value="{{ isset($product) ? $product->price : old('price') }}" x-mask:dynamic="$money($input, ',')">
                             </div>
                             <div>
                                 <label for="weight_in_grams" class="block text-gray-700 text-sm font-bold mb-2">Weight
                                     (in grams) *</label>
-                                <input type="number" id="weight_in_grams" name="weight_in_grams"
+                                <input type="text" id="weight_in_grams" name="weight_in_grams"
                                        class="w-full border rounded p-2"
-                                       value="{{ isset($product) ? $product->weight_in_grams : old('weight_in_grams') }}">
+                                       value="{{ isset($product) ? $product->weight_in_grams : old('weight_in_grams') }}" x-mask:dynamic="$money($input, ',')">
                             </div>
                         </div>
                         <div class="mb-4">
