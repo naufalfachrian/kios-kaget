@@ -31,6 +31,14 @@
             <main>
                 {{ $slot }}
             </main>
+
+            @if (isset($notifications))
+                <div class="fixed right-0 bottom-0 m-6 gap-3 flex flex-col" x-data="{
+                    notifications: [],
+                }" x-on:push-notification.window="notifications.push($event.detail)">
+                    {{ $notifications }}
+                </div>
+            @endif
         </div>
     </body>
 </html>
