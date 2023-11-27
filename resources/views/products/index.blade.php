@@ -20,18 +20,20 @@
             @else
             <div class="gap-4 grid lg:grid-cols-6 sm:grid-cols-4 grid-cols-2">
                 @foreach($products as $product)
-                <div class="bg-white shadow sm:rounded-lg relative overflow-hidden">
-                    <div
-                        class="w-full aspect-square auto flex items-center justify-center">
-                        @if(count($product->images) > 0)
-                        <img class="" src="{{$product->images[0]->image_url}}"/>
-                        @endif
+                <a href="{{ route('products.edit', $product) }}">
+                    <div class="bg-white shadow sm:rounded-lg relative overflow-hidden">
+                        <div
+                            class="w-full aspect-square auto flex items-center justify-center">
+                            @if(count($product->images) > 0)
+                                <img class="" src="{{$product->images[0]->image_url}}"/>
+                            @endif
+                        </div>
+                        <div class="p-2 flex flex-col">
+                            <span class="font-light text-gray-800 text-sm">{{ $product->name }}</span>
+                            <span class="font-semibold text-gray-800 text-md">{{ $product->formattedPrice() }}</span>
+                        </div>
                     </div>
-                    <div class="p-2 flex flex-col">
-                        <span class="font-light text-gray-800 text-sm">{{ $product->name }}</span>
-                        <span class="font-semibold text-gray-800 text-md">{{ $product->formattedPrice() }}</span>
-                    </div>
-                </div>
+                </a>
                 @endforeach
             </div>
             {{ $products->onEachSide(5)->links() }}

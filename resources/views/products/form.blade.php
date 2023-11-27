@@ -29,8 +29,8 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <form class="mx-auto bg-white rounded p-6"
-                          action="{{ isset($product) ? route('products.update', ['products' => $product->id]) : route('products.store') }}"
-                          x-on:submit.prevent="submitProduct()"
+                          action="{{ isset($product) ? route('products.update', ['product' => $product->id]) : route('products.store') }}"
+                          @if (!isset($product)) x-on:submit.prevent="submitProduct()" @else method="post" @endif
                           x-ref="productForm">
                         @if(isset($product))
                             @method('PATCH')
@@ -185,7 +185,11 @@
                 productImageName: null,
                 isUploadingProductImage: false,
                 isDeletingProductImage: false,
+                @if (isset($product))
+                productImages: {!! $product->images !!},
+                @else
                 productImages: [],
+                @endif
                 selectedProductImage: null,
                 isSubmittingProduct: false,
                 submitProduct() {

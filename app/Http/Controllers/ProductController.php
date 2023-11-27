@@ -50,7 +50,7 @@ class ProductController extends Controller
                 $product->images()->save($product_image);
             }
         }
-        if ($request->acceptsJson()) {
+        if ($request->expectsJson()) {
             return response()->json($product, 201);
         }
         return redirect()->route('products.index')->with(['success']);
@@ -69,7 +69,9 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('products.form', [
+            'product' => $product,
+        ]);
     }
 
     /**
@@ -77,7 +79,19 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        $product->fill($request->only($product->getFillable()));
+        $product->save();
+        $product_images = $request->get('product_images');
+        foreach ($product_images as $product_image_id) {
+            $product_image = ProductImage::query()->where('id', '=', $product_image_id)->first();
+            if ($product_image != null) {
+                $product->images()->save($product_image);
+            }
+        }
+        if ($request->expectsJson()) {
+            return response()->json($product, 200);
+        }
+        return redirect()->route('products.index')->with(['success']);
     }
 
     /**
