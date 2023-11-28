@@ -42,6 +42,9 @@
 
                     <x-slot name="content">
                         @if (Auth::user()->hasPermission(\App\Models\Permission::$PRODUCT_MASTER))
+                        <x-dropdown-link :href="route('tags.index')">
+                            {{ __('Setup Tag') }}
+                        </x-dropdown-link>
                         <x-dropdown-link :href="route('products.index')">
                             {{ __('Setup Product') }}
                         </x-dropdown-link>
@@ -149,6 +152,9 @@
                 </div>
                 @if (Auth::user()->hasPermission(\App\Models\Permission::$PRODUCT_MASTER))
                 <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('tags.index')">
+                        {{ __('Setup Tag') }}
+                    </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('products.index')">
                         {{ __('Setup Product') }}
                     </x-responsive-nav-link>

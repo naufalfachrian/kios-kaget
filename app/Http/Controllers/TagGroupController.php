@@ -35,7 +35,17 @@ class TagGroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $tagGroup = new TagGroup();
+        $tagGroup->fill($request->all($tagGroup->getFillable()));
+        $tagGroup->save();
+        if ($request->expectsJson()) {
+            return response()->json($tagGroup, 201);
+        }
+        return redirect()->route('tags.index')->with(['success' => [
+            'title' => 'Tag group created!',
+            'text' => 'Tag group ' . $tagGroup->name . ' has been created.',
+            'color' => 'bg-green-500/60'
+        ]]);
     }
 
     /**

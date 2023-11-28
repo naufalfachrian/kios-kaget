@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tag;
+use App\Models\TagGroup;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
@@ -19,7 +20,10 @@ class TagController extends Controller
      */
     public function index()
     {
-        //
+        $tagGroups = TagGroup::query()->orderBy('created_at', 'DESC')->paginate(10);
+        return view('tags.index', [
+            'tagGroups' => $tagGroups
+        ]);
     }
 
     /**
