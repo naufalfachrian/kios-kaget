@@ -4,6 +4,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShippingAddressController;
+use App\Http\Controllers\TagController;
+use App\Http\Controllers\TagGroupController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('shipping-addresses', ShippingAddressController::class);
     Route::resource('products', ProductController::class);
     Route::resource('product-images', ProductImageController::class);
+    Route::resource('tags', TagController::class);
+    Route::resource('tag-groups', TagGroupController::class);
 });
 
 require __DIR__.'/auth.php';
