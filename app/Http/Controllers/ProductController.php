@@ -91,7 +91,11 @@ class ProductController extends Controller
         if ($request->expectsJson()) {
             return response()->json($product, 200);
         }
-        return redirect()->route('products.index')->with(['success']);
+        return redirect()->route('products.index')->with(['success' => [
+            'title' => 'Product updated!',
+            'text' => 'Product ' . $product->name . ' has been updated.',
+            'color' => 'bg-green-500/60'
+        ]]);
     }
 
     /**

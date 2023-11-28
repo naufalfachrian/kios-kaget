@@ -9,7 +9,7 @@
         </x-primary-button-link>
     </x-slot>
 
-    <div class="py-12" x-data="deleteProductForm()">
+    <div class="py-12" x-data="deleteProductForm()" x-init="flashMessage()">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 gap-4 flex flex-col">
             @if(count($products) == 0)
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
@@ -44,6 +44,13 @@
     <script>
         function deleteProductForm() {
             return {
+                flashNotification: {!! json_encode(session()->get('success')) ?? 'null' !!},
+                flashMessage() {
+                    setTimeout(() => {
+                        if (this.flashNotification === null) return;
+                        this.$dispatch('push-notification', this.flashNotification);
+                    }, 100)
+                }
             }
         }
     </script>
