@@ -67,15 +67,19 @@
                         <div class="mb-4 grid lg:grid-cols-2 gap-4">
                             <div>
                                 <label for="price" class="block text-gray-700 text-sm font-bold mb-2">Price *</label>
-                                <input type="text" id="price" name="price" class="w-full border rounded p-2"
-                                       value="{{ isset($product) ? $product->price : old('price') }}" x-mask:dynamic="$money($input, ',')">
+                                <input type="text" id="price" class="w-full border rounded p-2"
+                                       :value="maskedPrice" x-mask:dynamic="$money($input, ',')" x-on:keyup="updateUnmaskedPrice()" x-ref="masked_price">
+                                <input hidden type="number" id="unmasked_price" name="price" x-ref="unmasked_price" step=".01"
+                                       value="{{ isset($product) ? $product->price : old('price') }}">
                             </div>
                             <div>
                                 <label for="weight_in_grams" class="block text-gray-700 text-sm font-bold mb-2">Weight
                                     (in grams) *</label>
-                                <input type="text" id="weight_in_grams" name="weight_in_grams"
+                                <input type="text" id="weight_in_grams"
                                        class="w-full border rounded p-2"
-                                       value="{{ isset($product) ? $product->weight_in_grams : old('weight_in_grams') }}" x-mask:dynamic="$money($input, ',')">
+                                       :value="maskedWeightInGrams" x-mask:dynamic="$money($input, ',')" x-on:keyup="updateUnmaskedWeightInGrams()" x-ref="masked_weight_in_grams">
+                                <input hidden type="number" id="unmasked_weight_in_grams" name="weight_in_grams" x-ref="unmasked_weight_in_grams" step=".1"
+                                       value="{{ isset($product) ? $product->weight_in_grams : old('weight_in_grams') }}">
                             </div>
                         </div>
                         <div class="mb-4">
@@ -192,6 +196,8 @@
                 @endif
                 selectedProductImage: null,
                 isSubmittingProduct: false,
+                maskedWeightInGrams: '{!! isset($product) ? number_format($product->weight_in_grams, 1, ',', '') : 0 !!}',
+                maskedPrice: '{!! isset($product) ? number_format($product->price, 2, ',', '') : 0 !!}',
                 submitProduct() {
                     this.isSubmittingProduct = true;
                     fetch(this.$refs.productForm.action, {
@@ -320,7 +326,21 @@
                 newProductImageForm() {
                     this.resetProductImageForm();
                     this.$dispatch('open-modal', 'product-image-form');
-                }
+                },
+                updateUnmaskedPrice() {
+                    let price = this.$refs.masked_price.value.replaceAll('.', '').replaceAll(',', '.');
+                    if (price.slice(-1) === '.') {
+                        price = price.slice(0, -1);
+                    }
+                    this.$refs.unmasked_price.value = price;
+                },
+                updateUnmaskedWeightInGrams() {
+                    let weightInGrams = this.$refs.masked_weight_in_grams.value.replaceAll('.', '').replaceAll(',', '.');
+                    if (weightInGrams.slice(-1) === '.') {
+                        weightInGrams = weightInGrams.slice(0, -1);
+                    }
+                    this.$refs.unmasked_weight_in_grams.value = weightInGrams;
+                },
             }
         }
     </script>
