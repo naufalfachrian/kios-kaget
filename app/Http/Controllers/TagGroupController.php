@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTagGroupRequest;
 use App\Models\TagGroup;
 use Illuminate\Http\Request;
 
@@ -33,7 +34,7 @@ class TagGroupController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTagGroupRequest $request)
     {
         $tagGroup = new TagGroup();
         $tagGroup->fill($request->all($tagGroup->getFillable()));

@@ -39,14 +39,16 @@
                 </h2>
                 <div class="mb-4">
                     <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Tag Group *</label>
-                    <input type="text" id="name" name="name" class="w-full border rounded p-2">
+                    <input type="text" x-model="tagGroupName" id="name" name="name" class="w-full border rounded p-2">
                 </div>
-                <x-primary-button class="gap-2">
+                <button type="submit"
+                        class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:active:bg-gray-700 dark:hover:active:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 disabled:opacity-25 gap-2 hover:disabled:cursor-not-allowed"
+                        :disabled="tagGroupName.length === 0">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                     </svg>
                     {{ __('Save') }}
-                </x-primary-button>
+                </button>
             </form>
         </x-modal>
     </div>
@@ -54,6 +56,7 @@
     <script>
         function tagIndex() {
             return {
+                tagGroupName: '',
                 flashNotification: {!! json_encode(session()->get('success')) ?? 'null' !!},
                 flashMessage() {
                     setTimeout(() => {
