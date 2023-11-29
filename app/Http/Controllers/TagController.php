@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTagRequest;
 use App\Models\Tag;
 use App\Models\TagGroup;
 use Illuminate\Http\Request;
@@ -37,9 +38,19 @@ class TagController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTagRequest $request)
     {
-        //
+        $tag = new Tag();
+        $tag->fill($request->all($tag->getFillable()));
+        $tag->save();
+        if ($request->expectsJson()) {
+            return response()->json($tag, 201);
+        }
+        return redirect()->back()->with(['success' => [
+            'title' => 'Tag created!',
+            'text' => 'Tag ' . $tag->name . ' has been created.',
+            'color' => 'bg-green-500/60'
+        ]]);
     }
 
     /**

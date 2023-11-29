@@ -23,8 +23,23 @@
             @else
             <div class="gap-4 grid">
                 @foreach ($tagGroups as $tagGroup)
-                <div class="bg-white shadow sm:rounded-lg relative overflow-hidden p-6">
+                <div class="bg-white shadow sm:rounded-lg relative overflow-hidden p-6 gap-2 flex flex-col">
                     <span class="font-semibold text-lg text-gray-800 leading-tight">{{ $tagGroup->name }}</span>
+                    <div class="flex flex-row gap-2">
+                        @foreach ($tagGroup->tags as $tag)
+                        <button type="button" class="rounded-full bg-green-100 shadow-sm text-sm py-2 px-4 flex flex-row items-center gap-2">
+                            <div class="bg-white rounded-full w-3 h-3"></div>
+                            {{ $tag->name }}
+                        </button>
+                        @endforeach
+                        <button type="button" class="rounded-full bg-orange-100 shadow-sm text-sm py-2 px-4 flex flex-row items-center gap-1" x-on:click="$dispatch('open-modal', 'form-new-tag'); selectedTagGroup.id = '{{ $tagGroup->id }}'; selectedTagGroup.name = '{{ $tagGroup->name }}'">
+                            <div class="bg-white rounded-full w-3 h-3"></div>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+                            </svg>
+                            New Tag on {{ $tagGroup->name }}
+                        </button>
+                    </div>
                 </div>
                 @endforeach
             </div>
@@ -51,12 +66,38 @@
                 </button>
             </form>
         </x-modal>
+        <x-modal name="form-new-tag">
+            <form method="post" class="p-6" action="{{ route('tags.store') }}" focusable>
+                @csrf
+                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
+                    {{ __('New Tag on ') }}<span x-text="selectedTagGroup.name"></span>
+                </h2>
+                <div class="mb-4">
+                    <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Tag *</label>
+                    <input type="text" x-model="tagName" id="name" name="name" class="w-full border rounded p-2">
+                </div>
+                <input hidden type="text" x-model="selectedTagGroup.id" id="tag_group_id" name="tag_group_id">
+                <button type="submit"
+                        class="btn--primary"
+                        :disabled="tagName.length === 0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>
+                    {{ __('Save') }}
+                </button>
+            </form>
+        </x-modal>
     </div>
 
     <script>
         function tagIndex() {
             return {
                 tagGroupName: '',
+                tagName: '',
+                selectedTagGroup: {
+                    name: null,
+                    id: null,
+                },
                 flashNotification: {!! json_encode(session()->get('success')) ?? 'null' !!},
                 flashMessage() {
                     setTimeout(() => {
