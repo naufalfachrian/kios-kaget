@@ -5,7 +5,11 @@
         </h2>
     </x-slot>
 
-    <div class="py-12" x-data="productForm()">
+    <div class="py-12" x-data="productForm()"
+         @product-image-stored="productImageStored($event.detail)"
+         @product-image-patched="productImagePatched($event.detail)"
+         @product-image-removed="productImageRemoved($event.detail)"
+         @product-image-form-canceled="productImageFormCanceled()">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
@@ -25,7 +29,7 @@
                             <template x-for="productImage in productImages">
                                 <div
                                     class="aspect-square overflow-clip rounded-lg border-gray-500 border-2 border-dashed flex items-center justify-center hover:cursor-pointer"
-                                    x-on:click.prevent="selectProductImage(productImage)"
+                                    x-on:click.prevent="productImageSelected(productImage)"
                                 >
                                     <img class="rounded-lg" :src="productImage.image_url"/>
                                 </div>
@@ -91,81 +95,7 @@
             </div>
         </div>
         <x-modal name="product-image-form" focusable>
-            <form method="post" x-ref="productImageForm" class="p-6" x-on:submit.prevent="submitProductImage()">
-                @csrf
-
-                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
-                    {{ __('Product Image') }}
-                </h2>
-
-                <div class="lg:grid lg:grid-cols-2 flex flex-col gap-3">
-
-                    <div
-                        class="w-full overflow-clip aspect-square border border-dashed border-gray-500 rounded-lg auto bg-clip-padding flex items-center justify-center">
-                        <img class="rounded-lg" :src="inputProductImageSource"/>
-                    </div>
-
-                    <div class="flex flex-col grow">
-                        <div class="mb-4">
-                            <label for="image_name" class="block text-gray-700 text-sm font-bold mb-2">Image
-                                Label</label>
-                            <input type="text" id="image_name" name="image_name" class="w-full border rounded p-2"
-                                   x-model="productImageName">
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="image_file" class="block text-gray-700 text-sm font-bold mb-2">Upload Image
-                                *</label>
-                            <input type="file" accept="image/jpeg" id="image_file" name="image_file" x-ref="image_file"
-                                   class="w-full border rounded p-2" x-on:change="reloadPreviewProductImage()">
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="mt-6 flex gap-3">
-                    <button :class="{'cursor-not-allowed': isUploadingProductImage || inputProductImageSource === null}"
-                            :disabled="isUploadingProductImage || inputProductImageSource === null"
-                            class="btn--primary">
-                        <svg :hidden="isUploadingProductImage" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                        </svg>
-                        <svg :hidden="!isUploadingProductImage"
-                             class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
-                             fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                    stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor"
-                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        <template x-if="selectedProductImage === null">
-                            <span>{{ __('Save') }}</span>
-                        </template>
-                        <template x-if="selectedProductImage !== null">
-                            <span>{{ __('Update') }}</span>
-                        </template>
-                    </button>
-
-                    <x-secondary-button class="ms-auto" x-on:click="$dispatch('close')">
-                        {{ __('Cancel') }}
-                    </x-secondary-button>
-
-                    <template x-if="selectedProductImage !== null">
-                        <button type="button" class="flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
-                                x-on:click="deleteProductImage()">
-                            <svg :hidden="!isDeletingProductImage"
-                                 class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
-                                 fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                        stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor"
-                                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                            {{ __('Delete') }}
-                        </button>
-                    </template>
-                </div>
-            </form>
+            <x-form-product-image name="form-product-image" class="p-6"></x-form-product-image>
         </x-modal>
     </div>
 
@@ -174,14 +104,11 @@
             return {
                 inputProductImageSource: null,
                 productImageName: null,
-                isUploadingProductImage: false,
-                isDeletingProductImage: false,
                 @if (isset($product))
                 productImages: {!! $product->images !!},
                 @else
                 productImages: [],
                 @endif
-                selectedProductImage: null,
                 isSubmittingProduct: false,
                 maskedWeightInGrams: '{!! isset($product) ? number_format($product->weight_in_grams, 1, ',', '') : 0 !!}',
                 maskedPrice: '{!! isset($product) ? number_format($product->price, 2, ',', '') : 0 !!}',
@@ -212,103 +139,30 @@
                         }
                     });
                 },
-                reloadPreviewProductImage() {
-                    let file = this.$refs.image_file.files[0];
-                    if (!file || file.type.indexOf('image/') === -1) return;
-                    this.inputProductImageSource = null;
-                    let reader = new FileReader();
-                    reader.onload = e => {
-                        this.inputProductImageSource = e.target.result;
-                    }
-                    reader.readAsDataURL(file);
+                productImageStored(productImage) {
+                    this.$dispatch('close');
+                    this.productImages.push(productImage);
                 },
-                submitProductImage() {
-                    if (this.selectedProductImage === null) {
-                        this.postProductImage();
-                    } else {
-                        this.patchProductImage();
-                    }
+                productImagePatched(productImage) {
+                    this.$dispatch('close');
+                    const index = this.productImages.map(value => value.id).indexOf(productImage.id);
+                    this.productImages[index] = productImage;
                 },
-                postProductImage() {
-                    this.isUploadingProductImage = true;
-                    let file = this.$refs.image_file.files[0];
-                    if (!file || file.type.indexOf('image/') === -1) {
-                        this.isUploadingProductImage = false;
-                        return
-                    }
-                    const formData = new FormData();
-                    formData.append('image', file);
-                    if (this.productImageName != null) {
-                        formData.append('image_name', this.productImageName);
-                    }
-                    fetch('{{ route('product-images.store') }}', {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'Accept': 'application/json',
-                            'x-csrf-token': '{{ csrf_token() }}'
-                        }
-                    }).then(response => response.json()).then(response => {
-                        this.resetProductImageForm();
-                        this.productImages.push(response);
-                    });
+                productImageRemoved(productImageId) {
+                    this.$dispatch('close');
+                    const index = this.productImages.map(value => value.id).indexOf(productImageId);
+                    this.productImages.splice(index, 1);
                 },
-                patchProductImage() {
-                    this.isUploadingProductImage = true;
-                    const formData = new FormData();
-                    let file = this.$refs.image_file.files[0];
-                    if (file && file.type.indexOf('image/') !== -1) {
-                        formData.append('image', file);
-                    }
-                    if (this.productImageName != null) {
-                        formData.append('image_name', this.productImageName);
-                    }
-                    fetch('{{ route('product-images.store') }}/' + this.selectedProductImage.id + '?_method=PATCH', {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'Accept': 'application/json',
-                            'x-csrf-token': '{{ csrf_token() }}',
-                        }
-                    }).then(response => response.json()).then(response => {
-                        this.resetProductImageForm();
-                        this.selectedProductImage = response;
-                        const index = this.productImages.map(value => value.id).indexOf(response.id);
-                        this.productImages[index] = response;
-                    });
-                },
-                deleteProductImage() {
-                    this.isDeletingProductImage = true;
-                    const productImageId = this.selectedProductImage.id;
-                    fetch('{{ route('product-images.store') }}/' + productImageId + '?_method=DELETE', {
-                        method: 'POST',
-                        headers: {
-                            'Accept': 'application/json',
-                            'x-csrf-token': '{{ csrf_token() }}',
-                        }
-                    }).then(response => response.text()).then(response => {
-                        console.log(response)
-                        this.resetProductImageForm();
-                        const index = this.productImages.map(value => value.id).indexOf(productImageId);
-                        this.productImages.splice(index, 1);
-                    });
-                },
-                selectProductImage(productImage) {
-                    this.selectedProductImage = productImage;
-                    this.inputProductImageSource = productImage.image_url;
-                    this.productImageName = productImage.image_name;
+                productImageSelected(productImage) {
+                    this.$dispatch('product-image-set', productImage);
                     this.$dispatch('open-modal', 'product-image-form');
+                },
+                productImageFormCanceled() {
+                    this.$dispatch('close');
                 },
                 resetProductImageForm() {
                     this.$dispatch('close');
-                    if (this.$refs.productImageForm !== undefined) {
-                        this.$refs.productImageForm.reset();
-                    }
-                    this.inputProductImageSource = null;
-                    this.productImageName = null;
-                    this.isUploadingProductImage = false;
-                    this.isDeletingProductImage = false;
-                    this.selectedProductImage = null;
+                    this.$dispatch('reset-form', 'form-product-image');
                 },
                 newProductImageForm() {
                     this.resetProductImageForm();
