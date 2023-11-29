@@ -87,6 +87,15 @@ class TagGroupController extends Controller
      */
     public function destroy(TagGroup $tagGroup)
     {
-        //
+        $tagGroup->tags()->delete();
+        $tagGroup->delete();
+        if (request()->expectsJson()) {
+            return response()->json($tagGroup, 204);
+        }
+        return redirect()->route('tags.index')->with(['success' => [
+            'title' => 'Tag group deleted!',
+            'text' => 'Tag group ' . $tagGroup->name . ' has been deleted.',
+            'color' => 'bg-green-500/60'
+        ]]);
     }
 }
