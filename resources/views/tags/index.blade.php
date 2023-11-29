@@ -25,14 +25,16 @@
                 @foreach ($tagGroups as $tagGroup)
                 <div class="bg-white shadow sm:rounded-lg relative overflow-hidden p-6 gap-2 flex flex-col">
                     <span class="font-semibold text-lg text-gray-800 leading-tight">{{ $tagGroup->name }}</span>
-                    <div class="flex flex-row gap-2">
+                    <div class="flex flex-wrap gap-2">
                         @foreach ($tagGroup->tags as $tag)
-                        <button type="button" class="rounded-full bg-green-100 shadow-sm text-sm py-2 px-4 flex flex-row items-center gap-2">
+                        <button type="button" class="rounded-full bg-green-100 shadow-sm text-sm py-2 px-4 flex flex-row items-center gap-2"
+                                x-on:click="$dispatch('open-modal', 'form-new-tag'); selectedTagGroup = JSON.parse('{{ $tagGroup }}'); selectedTag = JSON.parse('{{ $tag }}'); formNewTagProps.action = '{{ route('tags.update', $tag) }}'; formNewTagProps.method = 'patch'; formNewTagProps.buttonText = '{{ __('Update') }}'">
                             <div class="bg-white rounded-full w-3 h-3"></div>
                             {{ $tag->name }}
                         </button>
                         @endforeach
-                        <button type="button" class="rounded-full bg-orange-100 shadow-sm text-sm py-2 px-4 flex flex-row items-center gap-1" x-on:click="$dispatch('open-modal', 'form-new-tag'); selectedTagGroup.id = '{{ $tagGroup->id }}'; selectedTagGroup.name = '{{ $tagGroup->name }}'">
+                        <button type="button" class="rounded-full bg-orange-100 shadow-sm text-sm py-2 px-4 flex flex-row items-center gap-1"
+                                x-on:click="$dispatch('open-modal', 'form-new-tag'); selectedTagGroup = JSON.parse('{{ $tagGroup }}'); resetSelectedTag(); formNewTagProps.action = '{{ route('tags.store') }}'; formNewTagProps.method = 'post'; formNewTagProps.buttonText = '{{ __('Save') }}'">
                             <div class="bg-white rounded-full w-3 h-3"></div>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
@@ -67,24 +69,48 @@
             </form>
         </x-modal>
         <x-modal name="form-new-tag">
-            <form method="post" class="p-6" action="{{ route('tags.store') }}" focusable>
+            <form method="post" class="p-6" :action="formNewTagProps.action" focusable>
                 @csrf
+                <input hidden name="_method" x-model="formNewTagProps.method">
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
-                    {{ __('New Tag on ') }}<span x-text="selectedTagGroup.name"></span>
+                    <template x-if="selectedTag.id === null">
+                        <span>{{ __('New Tag on ') }}<span x-text="selectedTagGroup.name"></span></span>
+                    </template>
+                    <template x-if="selectedTag.id !== null">
+                        <span>{{ __('Update Tag ') }}<span x-text="selectedTag.name"></span></span>
+                    </template>
                 </h2>
                 <div class="mb-4">
                     <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Tag *</label>
-                    <input type="text" x-model="tagName" id="name" name="name" class="w-full border rounded p-2">
+                    <input type="text" x-model="selectedTag.name" id="name" name="name" class="w-full border rounded p-2">
                 </div>
                 <input hidden type="text" x-model="selectedTagGroup.id" id="tag_group_id" name="tag_group_id">
-                <button type="submit"
-                        class="btn--primary"
-                        :disabled="tagName.length === 0">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                    </svg>
-                    {{ __('Save') }}
-                </button>
+                <div class="flex">
+                    <button type="submit"
+                            class="btn--primary"
+                            :disabled="selectedTag.name === null || selectedTag.name.length === 0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        </svg>
+                        <span x-text="formNewTagProps.buttonText"></span>
+                    </button>
+                    <x-secondary-button x-on:click="$dispatch('close')" class="ms-auto">
+                        {{ __('Cancel') }}
+                    </x-secondary-button>
+                    <template x-if="selectedTag.id !== null">
+                        <button form="form_tag_delete" type="submit"
+                            class="btn--danger ms-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                            </svg>
+                            <span>{{ __('Delete') }}</span>
+                            <form hidden method="post" :action="formNewTagProps.action" id="form_tag_delete">
+                                @csrf
+                                @method("DELETE")
+                            </form>
+                        </button>
+                    </template>
+                </div>
             </form>
         </x-modal>
     </div>
@@ -93,10 +119,19 @@
         function tagIndex() {
             return {
                 tagGroupName: '',
-                tagName: '',
                 selectedTagGroup: {
                     name: null,
                     id: null,
+                },
+                selectedTag: {
+                    tag_group_id: null,
+                    name: null,
+                    id: null,
+                },
+                formNewTagProps: {
+                    action: null,
+                    method: null,
+                    buttonText: null,
                 },
                 flashNotification: {!! json_encode(session()->get('success')) ?? 'null' !!},
                 flashMessage() {
@@ -104,6 +139,13 @@
                         if (this.flashNotification === null) return;
                         this.$dispatch('push-notification', this.flashNotification);
                     }, 100)
+                },
+                resetSelectedTag() {
+                    this.selectedTag = {
+                        tag_group_id: null,
+                        name: null,
+                        id: null,
+                    }
                 }
             }
         }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTagRequest;
+use App\Http\Requests\UpdateTagRequest;
 use App\Models\Tag;
 use App\Models\TagGroup;
 use Illuminate\Http\Request;
@@ -72,9 +73,18 @@ class TagController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tag $tag)
+    public function update(UpdateTagRequest $request, Tag $tag)
     {
-        //
+        $tag->fill($request->all($tag->getFillable()));
+        $tag->save();
+        if ($request->expectsJson()) {
+            return response()->json($tag, 200);
+        }
+        return redirect()->back()->with(['success' => [
+            'title' => 'Tag updated!',
+            'text' => 'Tag ' . $tag->name . ' has been updated.',
+            'color' => 'bg-green-500/60'
+        ]]);
     }
 
     /**
@@ -82,6 +92,14 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
-        //
+        $tag->delete();
+        if (request()->expectsJson()) {
+            return response()->json(null, 204);
+        }
+        return redirect()->back()->with(['success' => [
+            'title' => 'Tag deleted!',
+            'text' => 'Tag ' . $tag->name . ' has been deleted.',
+            'color' => 'bg-green-500/60'
+        ]]);
     }
 }
