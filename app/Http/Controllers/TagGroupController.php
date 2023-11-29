@@ -70,7 +70,16 @@ class TagGroupController extends Controller
      */
     public function update(Request $request, TagGroup $tagGroup)
     {
-        //
+        $tagGroup->fill($request->all($tagGroup->getFillable()));
+        $tagGroup->save();
+        if ($request->expectsJson()) {
+            return response()->json($tagGroup, 200);
+        }
+        return redirect()->route('tags.index')->with(['success' => [
+            'title' => 'Tag group updated!',
+            'text' => 'Tag group ' . $tagGroup->name . ' has been updated.',
+            'color' => 'bg-green-500/60'
+        ]]);
     }
 
     /**
