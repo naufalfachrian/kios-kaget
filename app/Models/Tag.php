@@ -19,7 +19,7 @@ class Tag extends Model
 
     public function group(): BelongsTo
     {
-        return $this->belongsTo(TagGroup::class);
+        return $this->belongsTo(TagGroup::class, 'tag_group_id');
     }
 
     public function products(): BelongsToMany
