@@ -15,7 +15,7 @@
      x-transition:leave="transition ease-in duration-100"
      x-transition:leave-start="opacity-100 transform scale-y-100"
      x-transition:leave-end="opacity-0 transform scale-y-90">
-    <div class="absolute overflow-y-scroll h-auto max-h-96 top-100 mt-1 w-full border bg-white shadow-xl rounded-xl">
+    <div class="absolute overflow-y-scroll h-auto max-h-80 top-100 mt-1 w-full border bg-white shadow-xl rounded-xl">
         <div class="p-3">
             {{ $slot }}
         </div>
