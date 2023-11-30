@@ -10,6 +10,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <form class="mx-auto bg-white rounded p-6" x-data="shippingAddressForm()"
+                          @sub-district-selected.window="subDistrictSelected($event.detail)"
                           action="{{ isset($shippingAddress) ? route('shipping-addresses.update', ['shipping_address' => $shippingAddress->id]) : route('shipping-addresses.store') }}"
                           method="post">
                         @if ($errors->any())
@@ -42,24 +43,13 @@
                         </div>
 
                         <div class="mb-4 grid lg:grid-cols-2 gap-4">
-                            <div @click.away="subDistrictSuggestionActive=false" @keydown.escape="subDistrictSuggestionActive=false">
+                            <div @click.away="$dispatch('close-dropdown', 'select-sub-district')" @keydown.escape="$dispatch('close-dropdown', 'select-sub-district')">
                                 <label for="subDistrict" class="block text-gray-700 text-sm font-bold mb-2">Sub District *</label>
-                                <input type="text" id="subDistrict" name="subDistrict" class="w-full border rounded p-2" x-model="subDistrictQuery" @input="resetSubDistrict" @input.debounce.500="updateSubDistrictSuggestion" @focus="subDistrictSuggestionActive=true;postalCodeSuggestionActive=false">
-                                <div class="relative" x-show="subDistrictSuggestions.length > 0 && subDistrictSuggestionActive" x-cloak x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-y-90" x-transition:enter-end="opacity-100 transform scale-y-100" x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100 transform scale-y-100" x-transition:leave-end="opacity-0 transform scale-y-90">
-                                    <div class="absolute overflow-y-scroll h-auto max-h-96 top-100 mt-1 w-full border bg-white shadow-xl rounded-xl">
-                                        <div class="p-3">
-                                            <div class="" x-ref="list">
-                                                <template x-for="(suggestion, index) in subDistrictSuggestions" :key="index">
-                                                    <a x-bind:active="false"
-                                                       x-bind:class="{'p-2 flex block w-full rounded-xl hover:bg-gray-100 cursor-pointer': true}"
-                                                       x-on:click="selectSubDistrict(suggestion)">
-                                                        <span x-text="suggestion.name + ', ' + suggestion.district.name + ', ' + suggestion.district.city.name + ', ' + suggestion.district.city.province.name"></span>
-                                                    </a>
-                                                </template>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <input type="text" id="subDistrict" name="subDistrict" class="w-full border rounded p-2" x-model="subDistrictQuery"
+                                       @input="resetSubDistrict"
+                                       @input.debounce.500="$dispatch('find-sub-district', $el.value)"
+                                       @focus="$dispatch('open-dropdown', 'select-sub-district');postalCodeSuggestionActive=false">
+                                <x-dropdown-select-sub-district class="relative" name="select-sub-district" max="80"></x-dropdown-select-sub-district>
                             </div>
                             <div>
                                 <label for="district" class="block text-gray-700 text-sm font-bold mb-2">District *</label>
@@ -81,7 +71,7 @@
                         <div class="mb-4 grid lg:grid-cols-2 gap-4">
                             <div @click.away="postalCodeSuggestionActive=false" @keydown.escape="postalCodeSuggestionActive=false">
                                 <label for="postalCode" class="block text-gray-700 text-sm font-bold mb-2">Postal Code *</label>
-                                <input type="text" id="postalCode" name="postal_code" class="w-full border rounded p-2" x-model="inputPostalCode" @focus="subDistrictSuggestionActive=false;postalCodeSuggestionActive=true">
+                                <input type="text" id="postalCode" name="postal_code" class="w-full border rounded p-2" x-model="inputPostalCode" @focus="$dispatch('close-dropdown', 'select-sub-district');postalCodeSuggestionActive=true">
                                 <div class="relative" x-show="postalCodeSuggestions.length > 0 && postalCodeSuggestionActive" x-cloak x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 transform scale-y-90" x-transition:enter-end="opacity-100 transform scale-y-100" x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100 transform scale-y-100" x-transition:leave-end="opacity-0 transform scale-y-90">
                                     <div class="absolute overflow-y-scroll h-auto max-h-96 top-100 mt-1 w-full border bg-white shadow-xl rounded-xl">
                                         <div class="p-3">
@@ -125,8 +115,6 @@
         function shippingAddressForm() {
             return {
                 subDistrictQuery: "{{ isset($shippingAddress) ? $shippingAddress->subDistrict->name : old('subDistrict') }}",
-                subDistrictSuggestionActive: false,
-                subDistrictSuggestions: [],
                 postalCodeSuggestionActive: false,
                 postalCodeSuggestions: [],
                 selectedDistrictName: "{{ isset($shippingAddress) ? $shippingAddress->district->name : old('district') }}",
@@ -137,22 +125,11 @@
                 selectedCityId: "{{ isset($shippingAddress) ? $shippingAddress->city_id : old('city_id') }}",
                 selectedProvinceId: "{{ isset($shippingAddress) ? $shippingAddress->province_id : old('province_id') }}",
                 inputPostalCode: "{{ isset($shippingAddress) ? $shippingAddress->postal_code : old('postal_code') }}",
-                updateSubDistrictSuggestion() {
-                    if (this.subDistrictQuery === '') {
-                        this.subDistrictSuggestions = [];
-                        return;
-                    }
-                    fetch('/api/sub-districts/search?query=' + this.subDistrictQuery + '&size=' + 80)
-                        .then(response => response.json())
-                        .then(data => {
-                            this.subDistrictSuggestions = data;
-                        })
-                },
-                selectSubDistrict(selected) {
+                subDistrictSelected(selected) {
                     if (this.selectedSubDistrictId !== selected.id) {
                         this.inputPostalCode = "";
                     }
-                    this.subDistrictSuggestionActive = false;
+                    this.$dispatch('close-dropdown', 'select-sub-district');
                     this.subDistrictQuery = selected.name;
                     this.selectedDistrictName = selected.district.name;
                     this.selectedCityName = selected.district.city.name;
