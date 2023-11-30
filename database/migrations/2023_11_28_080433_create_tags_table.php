@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('tag_group_id')->nullable();
+            $table->uuid('tag_group_id');
             $table->string('name');
             $table->timestamps();
 
-            $table->foreign('tag_group_id')->references('id')->on('tag_groups')->onDelete('set null');
+            $table->foreign('tag_group_id')->references('id')->on('tag_groups')->onDelete('cascade');
         });
     }
 
