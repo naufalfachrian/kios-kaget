@@ -6,6 +6,7 @@ use App\Http\Requests\StoreTagRequest;
 use App\Http\Requests\UpdateTagRequest;
 use App\Models\Tag;
 use App\Models\TagGroup;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
@@ -101,5 +102,21 @@ class TagController extends Controller
             'text' => 'Tag ' . $tag->name . ' has been deleted.',
             'color' => 'bg-green-500/60'
         ]]);
+    }
+
+    public function search(Request $request): JsonResponse
+    {
+        $size = $request->get('size', 20);
+        $result = Tag::query()
+            ->where('tag_group_id', '!=', null);
+        if ($request->has('query')) {
+            $query = $request->get('query');
+            $result->where('name', 'LIKE', '%'. $query .'%');
+        }
+        return response()->json($result
+            ->with(['group'])
+            ->take($size)
+            ->get()
+        );
     }
 }
