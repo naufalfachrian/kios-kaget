@@ -45,6 +45,14 @@
         <input type="text" id="name" name="name" class="w-full border rounded p-2"
                value="{{ isset($product) ? $product->name : old('name') }}">
     </div>
+    <div class="mb-4" @click.away="$dispatch('close-dropdown', 'select-tags')" @keydown.escape="$dispatch('close-dropdown', 'select-tags')">
+        <label for="tags" class="block text-gray-700 text-sm font-bold mb-2">Tag</label>
+        <input type="text" id="tags" class="w-full border rounded p-2"
+               @focus="$dispatch('open-dropdown', 'select-tags')"
+               @input.debounce.500="$dispatch('find-tag', $el.value)"
+               @input="$dispatch('clear-dropdown', 'select-tags');">
+        <x-dropdown-select-tag class="relative z-50" name="select-tags" max="80"></x-dropdown-select-tag>
+    </div>
     <div class="mb-4 grid lg:grid-cols-2 gap-4">
         <div>
             <label for="price" class="block text-gray-700 text-sm font-bold mb-2">Price *</label>
