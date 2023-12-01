@@ -5,8 +5,9 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('homepage') }}" class="flex flex-row items-center gap-4">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                        <span class="text-sm font-medium text-gray-800">{{ env('APP_NAME') }}</span>
                     </a>
                 </div>
 
@@ -20,7 +21,7 @@
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-                @if (Auth::user()->hasPermission(\App\Models\Permission::$ADMINISTRATOR_ACCESS))
+                @if (Auth::check() && Auth::user()->hasPermission(\App\Models\Permission::$ADMINISTRATOR_ACCESS))
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
@@ -41,7 +42,7 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        @if (Auth::user()->hasPermission(\App\Models\Permission::$PRODUCT_MASTER))
+                        @if (Auth::check() && Auth::user()->hasPermission(\App\Models\Permission::$PRODUCT_MASTER))
                         <x-dropdown-link :href="route('tags.index')">
                             {{ __('Setup Tag') }}
                         </x-dropdown-link>
@@ -53,6 +54,7 @@
                 </x-dropdown>
                 @endif
 
+                @if (Auth::check())
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
@@ -65,7 +67,6 @@
                             </div>
                         </button>
                     </x-slot>
-
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
@@ -87,6 +88,7 @@
                         </form>
                     </x-slot>
                 </x-dropdown>
+                @endif
             </div>
 
             <!-- Hamburger -->
@@ -111,11 +113,11 @@
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+            @if (Auth::check())
             <div class="px-4">
                 <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
                 <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
             </div>
-
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
@@ -136,8 +138,9 @@
                     </x-responsive-nav-link>
                 </form>
             </div>
+            @endif
         </div>
-        @if (Auth::user()->hasPermission(\App\Models\Permission::$ADMINISTRATOR_ACCESS))
+        @if (Auth::check() && Auth::user()->hasPermission(\App\Models\Permission::$ADMINISTRATOR_ACCESS))
             <div class="pt-4 pb-3 space-y-1 border-t border-gray-200 dark:border-gray-600">
                 <div class="inline-flex px-4">
                     <div class="me-1 flex">
@@ -150,7 +153,7 @@
 
                     {{ __('Administrator Panel') }}
                 </div>
-                @if (Auth::user()->hasPermission(\App\Models\Permission::$PRODUCT_MASTER))
+                @if (Auth::check() && Auth::user()->hasPermission(\App\Models\Permission::$PRODUCT_MASTER))
                 <div class="mt-3 space-y-1">
                     <x-responsive-nav-link :href="route('tags.index')">
                         {{ __('Setup Tag') }}

@@ -1,4 +1,5 @@
 <x-app-layout>
+    @if(str_contains(Route::currentRouteName(), 'products.'))
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Products') }}
@@ -11,6 +12,7 @@
             {{ __('New Product') }}
         </a>
     </x-slot>
+    @endif
 
     <div class="py-12" x-data="deleteProductForm()" x-init="flashMessage()">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 gap-4 flex flex-col">
@@ -23,8 +25,9 @@
             @else
             <div class="gap-4 grid lg:grid-cols-6 sm:grid-cols-4 grid-cols-2">
                 @foreach ($products as $product)
-                <a href="{{ route('products.edit', $product) }}">
+                <a @if(str_contains(Route::currentRouteName(), 'products.')) href="{{ route('products.edit', $product) }}" @endif>
                     <div class="bg-white shadow sm:rounded-lg relative overflow-hidden">
+                        @if(str_contains(Route::currentRouteName(), 'products.'))
                         <div class="absolute right-0 top-0 mt-2 me-2 gap-1.5 flex">
                             <button class="shadow-lg hover:shadow bg-red-500/60 backdrop-blur-xl hover:bg-red-600/80 p-2 rounded-lg text-white"
                                     x-on:click.prevent="$dispatch('open-modal', 'confirm-product-deletion'); confirmDeleteProduct({{json_encode($product)}}); action = '{{ route('products.destroy', ['product' => $product->id]) }}'">
@@ -33,6 +36,7 @@
                                 </svg>
                             </button>
                         </div>
+                        @endif
                         <div
                             class="w-full aspect-square auto flex items-center justify-center">
                             @if (count($product->images) > 0)

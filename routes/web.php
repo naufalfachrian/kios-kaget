@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShippingAddressController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TagGroupController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,8 +21,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $products = Product::query()->orderBy('created_at', 'DESC')->paginate(24);
+    return view('products.index', [
+        'products' => $products,
+    ]);
+})->name('homepage');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
