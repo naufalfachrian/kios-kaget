@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Partials\ProductIndex;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
@@ -11,6 +12,7 @@ use Ramsey\Uuid\Uuid;
 
 class ProductController extends Controller
 {
+    use ProductIndex;
 
     public function __construct()
     {
@@ -23,10 +25,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::query()->orderBy('created_at', 'DESC')->paginate(24);
-        return view('products.index', [
-            'products' => $products,
-        ]);
+        return $this->productIndex();
     }
 
     /**

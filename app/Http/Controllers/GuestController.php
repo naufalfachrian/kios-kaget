@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Partials\ProductIndex;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -10,6 +11,8 @@ use Illuminate\View\View;
 
 class GuestController extends Controller
 {
+    use ProductIndex;
+
     function index(Request $request): View|RedirectResponse
     {
         if ($request->has('product_id')) {
@@ -20,10 +23,7 @@ class GuestController extends Controller
 
     function homepage(): View
     {
-        $products = Product::query()->orderBy('created_at', 'DESC')->paginate(24);
-        return view('products.index', [
-            'products' => $products,
-        ]);
+        return $this->productIndex();
     }
 
     function showProduct(Product $product): View|RedirectResponse
