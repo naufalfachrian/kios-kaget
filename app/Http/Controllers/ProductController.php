@@ -6,6 +6,8 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\Tag;
+use Ramsey\Uuid\Uuid;
 
 class ProductController extends Controller
 {
@@ -50,6 +52,15 @@ class ProductController extends Controller
                 $product->images()->save($product_image);
             }
         }
+        if ($request->has('tags')) {
+            $tags = $request->get('tags');
+            foreach ($tags as $tag_id) {
+                $tag = Tag::query()->where('id', '=', $tag_id)->first();
+                if ($tag != null) {
+                    $product->tags()->save($tag, ['id' => Uuid::uuid4()->toString()]);
+                }
+            }
+        }
         if ($request->expectsJson()) {
             return response()->json($product, 201);
         }
@@ -86,6 +97,16 @@ class ProductController extends Controller
             $product_image = ProductImage::query()->where('id', '=', $product_image_id)->first();
             if ($product_image != null) {
                 $product->images()->save($product_image);
+            }
+        }
+        $product->tags()->sync([]);
+        if ($request->has('tags')) {
+            $tags = $request->get('tags');
+            foreach ($tags as $tag_id) {
+                $tag = Tag::query()->where('id', '=', $tag_id)->first();
+                if ($tag != null) {
+                    $product->tags()->save($tag, ['id' => Uuid::uuid4()->toString()]);
+                }
             }
         }
         if ($request->expectsJson()) {

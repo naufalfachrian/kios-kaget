@@ -10,6 +10,7 @@
       @product-image-patched.window="productImagePatched($event.detail)"
       @product-image-removed.window="productImageRemoved($event.detail)"
       @product-image-form-canceled.window="productImageFormCanceled()"
+      @tag-selected.window="tagSelected($event.detail)"
       action="{{ isset($product) ? route('products.update', ['product' => $product->id]) : route('products.store') }}"
       @if (!isset($product)) @submit.prevent="submitProduct()" @else method="post" @endif
       x-ref="productForm">
@@ -45,14 +46,29 @@
         <input type="text" id="name" name="name" class="w-full border rounded p-2"
                value="{{ isset($product) ? $product->name : old('name') }}">
     </div>
-    <div class="mb-4" @click.away="$dispatch('close-dropdown', 'select-tags')" @keydown.escape="$dispatch('close-dropdown', 'select-tags')">
+    <div class="mb-4">
         <label for="tags" class="block text-gray-700 text-sm font-bold mb-2">Tag</label>
-        <input type="text" id="tags" class="w-full border rounded p-2"
-               @focus="$dispatch('open-dropdown', 'select-tags')"
-               @input.debounce.500="$dispatch('find-tag', $el.value)"
-               @input="$dispatch('clear-dropdown', 'select-tags');">
-        <x-dropdown-select-tag class="relative z-50" name="select-tags" max="80"></x-dropdown-select-tag>
+        <div class="flex-wrap flex justify-start gap-2 mb-2">
+            <template x-if="tags.length === 0">
+                <span class="bg-red-100 text-sm p-1 rounded-md whitespace-nowrap">No tags selected</span>
+            </template>
+            <template x-for="(tag, index) in tags" :key="index">
+                <span class="bg-green-100 text-sm p-1 rounded-md whitespace-nowrap" x-text="tag.name"></span>
+            </template>
+        </div>
+        <div @click.away="$dispatch('close-dropdown', 'select-tags')"
+             @keydown.escape="$dispatch('close-dropdown', 'select-tags')">
+            <input type="text" id="tags" class="w-full border rounded p-2"
+                   @focus="$dispatch('open-dropdown', 'select-tags')"
+                   @input.debounce.500="$dispatch('find-tag', $el.value)"
+                   @input="$dispatch('clear-dropdown', 'select-tags');"
+                   placeholder="Find tags">
+            <x-dropdown-select-tag class="relative z-50" name="select-tags" max="80"></x-dropdown-select-tag>
+        </div>
     </div>
+    <template x-for="(tag, index) in tags" :key="index">
+        <input hidden="" name="tags[]" :value="tag.id"/>
+    </template>
     <div class="mb-4 grid lg:grid-cols-2 gap-4">
         <div>
             <label for="price" class="block text-gray-700 text-sm font-bold mb-2">Price *</label>
@@ -104,6 +120,11 @@
             @else
             productImages: [],
             @endif
+            @if (isset($product))
+            tags: {!! $product->tags !!},
+            @else
+            tags: [],
+            @endif
             isSubmitting: false,
             maskedWeightInGrams: '{!! isset($product) ? number_format($product->weight_in_grams, 1, ',', '') : 0 !!}',
             maskedPrice: '{!! isset($product) ? number_format($product->price, 2, ',', '') : 0 !!}',
@@ -121,6 +142,9 @@
                     if (response.status === 201) {
                         while (this.productImages.length) {
                             this.productImages.pop();
+                        }
+                        while (this.tags.length) {
+                            this.tags.pop();
                         }
                         this.resetProductImageForm();
                         this.$refs.productForm.reset();
@@ -177,6 +201,14 @@
                 }
                 this.$refs.unmasked_weight_in_grams.value = weightInGrams;
             },
+            tagSelected(selectedTag) {
+                let index = this.tags.findIndex((item) => item.id === selectedTag.id);
+                if (index > -1) {
+                    this.tags.splice(index, 1);
+                } else {
+                    this.tags.push(selectedTag);
+                }
+            }
         }
     }
 </script>
