@@ -25,7 +25,13 @@
             @else
             <div class="gap-4 grid lg:grid-cols-6 sm:grid-cols-4 grid-cols-2">
                 @foreach ($products as $product)
-                <a @if(str_contains(Route::currentRouteName(), 'products.')) href="{{ route('products.edit', $product) }}" @endif>
+                <a
+                    @if(str_contains(Route::currentRouteName(), 'products.'))
+                    href="{{ route('products.edit', $product) }}"
+                    @else
+                    href="{{ route('homepage', ['product_id' => $product->id]) }}"
+                    @endif
+                >
                     <div class="bg-white shadow sm:rounded-lg relative overflow-hidden">
                         @if(str_contains(Route::currentRouteName(), 'products.'))
                         <div class="absolute right-0 top-0 mt-2 me-2 gap-1.5 flex">

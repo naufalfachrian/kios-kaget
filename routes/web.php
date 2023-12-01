@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GuestController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\ProfileController;
@@ -20,12 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    $products = Product::query()->orderBy('created_at', 'DESC')->paginate(24);
-    return view('products.index', [
-        'products' => $products,
-    ]);
-})->name('homepage');
+Route::get('/', [GuestController::class, 'index'])->name('homepage');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
