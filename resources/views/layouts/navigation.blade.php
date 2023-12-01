@@ -13,7 +13,7 @@
             </div>
 
             <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6 sm:gap-4">
+            <div class="hidden sm:flex sm:items-center sm:ms-6 sm:gap-1">
                 @if (Auth::check() && Auth::user()->hasPermission(\App\Models\Permission::$ADMINISTRATOR_ACCESS))
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
