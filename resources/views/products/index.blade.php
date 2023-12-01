@@ -22,7 +22,7 @@
             </div>
             @else
             <div class="gap-4 grid lg:grid-cols-6 sm:grid-cols-4 grid-cols-2">
-                @foreach($products as $product)
+                @foreach ($products as $product)
                 <a href="{{ route('products.edit', $product) }}">
                     <div class="bg-white shadow sm:rounded-lg relative overflow-hidden">
                         <div class="absolute right-0 top-0 mt-2 me-2 gap-1.5 flex">
@@ -35,13 +35,20 @@
                         </div>
                         <div
                             class="w-full aspect-square auto flex items-center justify-center">
-                            @if(count($product->images) > 0)
+                            @if (count($product->images) > 0)
                                 <img class="" src="{{$product->images[0]->image_url}}"/>
                             @endif
                         </div>
                         <div class="p-2 flex flex-col">
                             <span class="font-light text-gray-800 text-sm">{{ $product->name }}</span>
                             <span class="font-semibold text-gray-800 text-md">{{ $product->formattedPrice() }}</span>
+                            @if (count($product->tags) > 0)
+                            <div class="flex flex-wrap justify-start gap-0.5">
+                                @foreach ($product->tags as $tag)
+                                    <span class="bg-green-100 text-xs p-1 rounded-md whitespace-nowrap">{{ $tag->name }}</span>
+                                @endforeach
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </a>
