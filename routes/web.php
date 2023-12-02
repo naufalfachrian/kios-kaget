@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CartDetailController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImageController;
@@ -7,7 +9,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShippingAddressController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TagGroupController;
-use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,6 +38,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('product-images', ProductImageController::class);
     Route::resource('tags', TagController::class);
     Route::resource('tag-groups', TagGroupController::class);
+    Route::resource('carts', CartController::class);
 });
+
+Route::resource('cart-details', CartDetailController::class);
 
 require __DIR__.'/auth.php';
