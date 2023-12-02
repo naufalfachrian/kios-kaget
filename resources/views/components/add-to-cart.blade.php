@@ -39,7 +39,8 @@
                     body: new FormData(form),
                     headers: {
                         'Accept': 'application/json',
-                        'x-csrf-token': '{{ csrf_token() }}'
+                        'x-csrf-token': '{{ csrf_token() }}',
+                        'x-cart-session-id': getSessionId(),
                     }
                 }).then(response => {
                     this.isSubmitting = false;
@@ -51,6 +52,8 @@
                                 text: 'Product ' + jsonResponse.product_name + ' has been added to your cart.',
                                 color: 'bg-green-500/60',
                             });
+                            this.$dispatch('cart-reload');
+                            this.$dispatch('open-modal', 'cart');
                         } else {
                             this.$dispatch('push-notification', {
                                 title: 'Failed!',

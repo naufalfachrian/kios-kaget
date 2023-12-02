@@ -16,6 +16,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "@alpinejs/mask": "^3.13.3"
+        "@alpinejs/mask": "^3.13.3",
+        "uuid": "^9.0.1"
     }
 }

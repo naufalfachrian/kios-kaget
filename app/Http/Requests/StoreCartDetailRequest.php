@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
 class StoreCartDetailRequest extends FormRequest
 {
@@ -24,7 +23,7 @@ class StoreCartDetailRequest extends FormRequest
     {
         return [
             'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|numeric|min:1'
+            'quantity' => 'required|numeric'
         ];
     }
 }

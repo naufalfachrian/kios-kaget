@@ -53,5 +53,9 @@
                 </template>
             </div>
         </div>
+
+    <x-modal name="cart" from="end">
+        <x-cart></x-cart>
+    </x-modal>
     </body>
 </html>

@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Partials\FirstOrCreateCart;
 use App\Http\Requests\StoreCartDetailRequest;
 use App\Models\Cart;
 use App\Models\CartDetail;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class CartDetailController extends Controller
 {
+    use FirstOrCreateCart;
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $cart = $this->firstOrCreateCart(request()->header('x-cart-session-id'));
+        return response()->json($cart);
     }
 
     /**
@@ -32,14 +35,10 @@ class CartDetailController extends Controller
      */
     public function store(StoreCartDetailRequest $request)
     {
-        $user_id = Auth::user() != null ? Auth::user()->id : null;
-        $cart = Cart::firstOrNew([
-            'user_id' => $user_id,
-        ]);
-        $cart->session_id = $request->session()->getId();
-        $cart->save();
+        $cart = $this->firstOrCreateCart($request->header('x-cart-session-id'));
         $product = Product::find($request->get('product_id'));
-        $cartDetail = CartDetail::firstOrCreate([
+        $cartDetail = CartDetail::firstOrNew([
+            'cart_id' => $cart->id,
             'product_id' => $product->id,
         ]);
         $cartDetail->fill([
@@ -49,7 +48,6 @@ class CartDetailController extends Controller
             'product_description' => $product->description,
             'product_weight_in_grams' => $product->weight_in_grams,
         ]);
-        $cartDetail->cart()->associate($cart);
         $cartDetail->save();
         if ($request->expectsJson()) {
             return response()->json($cartDetail, 201);
