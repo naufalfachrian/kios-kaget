@@ -39,9 +39,11 @@ class CartDetailController extends Controller
         $cart->session_id = $request->session()->getId();
         $cart->save();
         $product = Product::find($request->get('product_id'));
-        $cartDetail = new CartDetail();
-        $cartDetail->fill($request->all($cartDetail->getFillable()));
+        $cartDetail = CartDetail::firstOrCreate([
+            'product_id' => $product->id,
+        ]);
         $cartDetail->fill([
+            'quantity' => $cartDetail->quantity + $request->get('quantity'),
             'product_name' => $product->name,
             'product_price' => $product->price,
             'product_description' => $product->description,
