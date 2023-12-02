@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name');
             $table->decimal('price', 10, 2);
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->decimal('weight_in_grams', 10, 2);
             $table->timestamps();
         });

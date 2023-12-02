@@ -27,7 +27,7 @@ class StoreProductRequest extends FormRequest
             'product_images' => 'required|array',
             'name' => 'required|string',
             'price' => 'required|numeric|min:0',
-            'description' => 'required|string',
+            'description' => 'string',
             'weight_in_grams' => 'required|numeric|min:0',
         ];
     }
