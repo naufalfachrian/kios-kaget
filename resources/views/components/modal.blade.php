@@ -1,7 +1,8 @@
 @props([
     'name',
     'show' => false,
-    'maxWidth' => '2xl'
+    'maxWidth' => '2xl',
+    'from' => 'top'
 ])
 
 @php
@@ -46,7 +47,7 @@ $maxWidth = [
     x-on:keydown.tab.prevent="$event.shiftKey || nextFocusable().focus()"
     x-on:keydown.shift.tab.prevent="prevFocusable().focus()"
     x-show="show"
-    class="fixed inset-0 overflow-y-auto px-4 py-0 sm:px-0 z-50"
+    class="{{ $from === 'top' ? 'fixed inset-0 overflow-y-auto px-4 py-0 sm:px-0' : ($from === 'end' ? 'absolute end-0 top-0 bottom-0 inset-0 h-full' : '') }} z-50"
     style="display: {{ $show ? 'block' : 'none' }};"
 >
     <div
@@ -65,13 +66,13 @@ $maxWidth = [
 
     <div
         x-show="show"
-        class="mb-6 bg-white dark:bg-gray-800 rounded-b-3xl overflow-hidden shadow-xl transform transition-all sm:w-full {{ $maxWidth }} sm:mx-auto"
+        class="{{ $from === 'top' ? 'rounded-b-3xl sm:mx-auto' : ($from === 'end' ? 'h-full rounded-s-3xl sm:mx-auto sm:me-0' : '') }} mb-6 bg-white dark:bg-gray-800 overflow-hidden shadow-xl transform transition-all sm:w-full {{ $maxWidth }}"
         x-transition:enter="ease-out duration-300"
-        x-transition:enter-start="opacity-0 -translate-y-12"
-        x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+        x-transition:enter-start="{{ $from === 'top' ? '-translate-y-12' : ($from === 'end' ? 'translate-x-12' : '') }} opacity-0"
+        x-transition:enter-end="{{ $from === 'top' ? 'translate-y-0' : ($from === 'end' ? 'translate-x-0' : '') }} opacity-100 sm:scale-100"
         x-transition:leave="ease-in duration-200"
-        x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-        x-transition:leave-end="opacity-0 -translate-y-12"
+        x-transition:leave-start="{{ $from === 'top' ? 'translate-y-0' : ($from === 'end' ? 'translate-x-0' : '') }} opacity-100 sm:scale-100"
+        x-transition:leave-end="{{ $from === 'top' ? '-translate-y-12' : ($from === 'end' ? 'translate-x-12' : '') }} opacity-0"
     >
         {{ $slot }}
     </div>
