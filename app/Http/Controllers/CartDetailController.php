@@ -47,14 +47,18 @@ class CartDetailController extends Controller
         } else {
             $quantity += $request->get('quantity_inc', 0);
         }
-        $cartDetail->fill([
-            'quantity' => $quantity,
-            'product_name' => $product->name,
-            'product_price' => $product->price,
-            'product_description' => $product->description,
-            'product_weight_in_grams' => $product->weight_in_grams,
-        ]);
-        $cartDetail->save();
+        if ($quantity == 0) {
+            $cartDetail->delete();
+        } else {
+            $cartDetail->fill([
+                'quantity' => $quantity,
+                'product_name' => $product->name,
+                'product_price' => $product->price,
+                'product_description' => $product->description,
+                'product_weight_in_grams' => $product->weight_in_grams,
+            ]);
+            $cartDetail->save();
+        }
         if ($request->expectsJson()) {
             return response()->json($cartDetail, 201);
         }
