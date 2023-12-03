@@ -41,8 +41,14 @@ class CartDetailController extends Controller
             'cart_id' => $cart->id,
             'product_id' => $product->id,
         ]);
+        $quantity = $cartDetail->quantity;
+        if ($request->has('quantity_set')) {
+            $quantity = $request->get('quantity_set');
+        } else {
+            $quantity += $request->get('quantity_inc', 0);
+        }
         $cartDetail->fill([
-            'quantity' => $cartDetail->quantity + $request->get('quantity'),
+            'quantity' => $quantity,
             'product_name' => $product->name,
             'product_price' => $product->price,
             'product_description' => $product->description,

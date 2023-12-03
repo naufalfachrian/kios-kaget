@@ -23,7 +23,8 @@ class StoreCartDetailRequest extends FormRequest
     {
         return [
             'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|numeric'
+            'quantity_inc' => 'numeric',
+            'quantity_set' => 'numeric'
         ];
     }
 }

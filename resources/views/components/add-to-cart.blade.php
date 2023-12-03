@@ -5,8 +5,8 @@
 
 <form x-data="addToCartForm" @submit.prevent="addToCart($el)" action="{{ route('cart-details.store') }}" class="{{ $class }}">
     <div class="mb-4 hidden md:block">
-        <label for="quantity" class="block text-gray-700 text-sm font-bold mb-2">Purchase quantity</label>
-        <input type="number" id="quantity" name="quantity" class="w-full border rounded-lg p-2" value="1">
+        <label for="quantity_inc" class="block text-gray-700 text-sm font-bold mb-2">Purchase quantity</label>
+        <input type="number" id="quantity_inc" name="quantity_inc" class="w-full border rounded-lg p-2" value="1">
     </div>
     <input hidden="" type="text" id="product_id" name="product_id" value="{{ $product->id }}">
     <button type="submit" class="btn--primary w-full bg-orange-500 items-center justify-center"
