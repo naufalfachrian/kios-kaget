@@ -58,7 +58,7 @@
                         this.cartDetails = response.details;
                         this.subTotal = 0;
                         for (let detail of response.details) {
-                            this.subTotal += parseInt(detail.product.price);
+                            this.subTotal += parseInt(detail.product.price * detail.quantity);
                         }
                     })
                 });
