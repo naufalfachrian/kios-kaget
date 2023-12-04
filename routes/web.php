@@ -6,7 +6,6 @@ use App\Http\Controllers\GuestController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ShippingAddressController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\TagGroupController;
 use Illuminate\Support\Facades\Route;
@@ -33,7 +32,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/tags/search', [TagController::class, 'search'])->name('tags.search');
-    Route::resource('shipping-addresses', ShippingAddressController::class);
     Route::resource('products', ProductController::class);
     Route::resource('product-images', ProductImageController::class);
     Route::resource('tags', TagController::class);

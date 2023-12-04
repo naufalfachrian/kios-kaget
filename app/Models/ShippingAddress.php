@@ -11,7 +11,6 @@ class ShippingAddress extends Model
     use HasFactory, HasUuids;
 
     protected $fillable = [
-        'user_id',
         'label',
         'recipient_name',
         'address',
@@ -23,11 +22,6 @@ class ShippingAddress extends Model
         'phone_number',
         'landmark',
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
     public function subDistrict()
     {
