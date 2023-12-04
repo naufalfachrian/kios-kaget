@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('shipping_address_id');
+            $table->string('email');
             $table->decimal('total_price', 10, 2);
             $table->timestamps();
 
