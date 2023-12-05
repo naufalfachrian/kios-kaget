@@ -47,7 +47,7 @@ $maxWidth = [
     x-on:keydown.tab.prevent="$event.shiftKey || nextFocusable().focus()"
     x-on:keydown.shift.tab.prevent="prevFocusable().focus()"
     x-show="show"
-    class="{{ $from === 'top' ? 'fixed inset-0 overflow-y-auto px-4 py-0 sm:px-0' : ($from === 'end' ? 'absolute end-0 top-0 bottom-0 inset-0 h-full' : '') }} z-50"
+    class="{{ $from === 'top' ? 'fixed inset-0 overflow-y-auto px-4 py-0 sm:px-0' : ($from === 'end' ? 'sticky end-0 top-0 bottom-0 inset-0 h-screen' : '') }} z-50"
     style="display: {{ $show ? 'block' : 'none' }};"
 >
     <div
