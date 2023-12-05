@@ -12,6 +12,12 @@ class Order extends Model
 {
     use HasUuids, HasFactory;
 
+    protected $fillable = [
+        'shipping_address_id',
+        'email',
+        'total_price',
+    ];
+
     public function details(): HasMany
     {
         return $this->hasMany(OrderDetail::class);
@@ -24,6 +30,6 @@ class Order extends Model
 
     public function shippingAddress(): BelongsTo
     {
-        return $this->belongsTo(ShippingAddress::class);
+        return $this->belongsTo(ShippingAddress::class, 'shipping_address_id');
     }
 }

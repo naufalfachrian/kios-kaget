@@ -1,7 +1,12 @@
 <x-app-layout>
-    <div class="py-12 max-w-7xl mx-auto sm:px-6 lg:px-8" x-data="checkoutForm"
+    <form class="py-12 max-w-7xl mx-auto sm:px-6 lg:px-8" x-data="checkoutForm" method="post" action="{{ route('orders.store') }}"
          @sub-district-selected.window="subDistrictSelected($event.detail)"
          @postal-code-selected.window="postalCodeSelected($event.detail)">
+        @csrf
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+        <input hidden="" name="session_id" x-model="sessionId">
         <div class="grid lg:grid-cols-2">
             <div class="flex flex-col p-6 border-orange-200 rounded-xl border-2 shadow-xl backdrop-blur">
                 <h2 class="font-bold text-xl mb-4">{{ __('Contact') }}</h2>
@@ -14,8 +19,8 @@
                 <h2 class="font-bold text-xl mb-4 mt-4">{{ __('Delivery') }}</h2>
 
                 <div class="mb-4">
-                    <label for="recipient" class="block text-gray-700 text-sm font mb-1">Recipient Name *</label>
-                    <input type="text" id="recipient" name="recipient_name" class="w-full border rounded p-2" value="{{ isset($shippingAddress) ? $shippingAddress->recipient_name : old('recipient_name') }}">
+                    <label for="recipient_name" class="block text-gray-700 text-sm font mb-1">Recipient Name *</label>
+                    <input type="text" id="recipient_name" name="recipient_name" class="w-full border rounded p-2" value="{{ isset($shippingAddress) ? $shippingAddress->recipient_name : old('recipient_name') }}">
                 </div>
 
                 <div class="mb-4">
@@ -85,7 +90,7 @@
                 <x-cart-checkout></x-cart-checkout>
             </div>
         </div>
-    </div>
+    </form>
 
     <script>
         function checkoutForm() {
@@ -99,6 +104,7 @@
                 selectedCityId: "{{ isset($shippingAddress) ? $shippingAddress->city_id : old('city_id') }}",
                 selectedProvinceId: "{{ isset($shippingAddress) ? $shippingAddress->province_id : old('province_id') }}",
                 inputPostalCode: "{{ isset($shippingAddress) ? $shippingAddress->postal_code : old('postal_code') }}",
+                sessionId: getSessionId(),
                 subDistrictSelected(selected) {
                     console.log(selected);
                     if (this.selectedSubDistrictId !== selected.id) {
