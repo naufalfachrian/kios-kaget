@@ -12,7 +12,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Gabarito', ...defaultTheme.fontFamily.sans],
+                sans: ['Pally', ...defaultTheme.fontFamily.sans],
             },
             colors: {
                 'brand-brown': '#9a0d09',
