@@ -155,6 +155,14 @@
                                 color: 'bg-green-500/60',
                             });
                         });
+                    } else {
+                        response.json().then(responseJSON => {
+                            this.$dispatch('push-notification', {
+                                title: 'Product failed to create!',
+                                text: responseJSON.message,
+                                color: 'bg-red-500/60',
+                            });
+                        });
                     }
                 });
             },
