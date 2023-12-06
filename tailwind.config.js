@@ -16,6 +16,7 @@ export default {
             },
             colors: {
                 'brand-brown': '#9a0d09',
+                'brand-black': '#2b2a4c'
             }
         },
     },
