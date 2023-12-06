@@ -3,7 +3,7 @@
     <span class="text-sm">No results.</span>
 </div>
 @else
-<div class="gap-4 grid lg:grid-cols-5 sm:grid-cols-4 grid-cols-2">
+<div class="gap-4 grid sm:grid-cols-4 grid-cols-2">
     @foreach ($products as $product)
         <a
             @if(str_contains(Route::currentRouteName(), 'products.'))
