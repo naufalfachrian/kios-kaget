@@ -14,7 +14,8 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased relative" style="background: url('{{ __('/assets/background.png') }}');">
+        <div class="bg-orange-500 fixed top-0 start-0 end-0 h-1/2 -z-50" style="background: url('{{ __('/assets/banner.png') }}') no-repeat; background-size: 100% 100%;"></div>
         <div class="min-h-screen">
             @include('layouts.navigation')
 

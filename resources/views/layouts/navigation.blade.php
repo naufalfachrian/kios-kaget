@@ -1,14 +1,33 @@
-<nav x-data="{ open: false }" class="sticky top-0 rounded-b-xl z-40 shadow-lg text-gray-800 backdrop-blur bg-white/70">
+<nav x-data="navigation()" x-init="init"
+     class="sticky top-0 z-40 text-gray-200"
+     :class="atTopOfPage ? 'bg-brand-brown' : 'bg-brand-brown/60 backdrop-blur-lg shadow-lg'">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
+        <div class="flex justify-between h-24">
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('homepage') }}" class="flex flex-row items-center gap-4">
-                        <x-application-logo class="block h-9 w-auto fill-current" />
-                        <span class="text-lg font-medium">{{ env('APP_NAME') }}</span>
+                        <img src="{{ __('/assets/logo.png') }}" class="h-16">
                     </a>
+                </div>
+
+                <div class="hidden space-x-8 sm:my-auto sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        {{ __('Creators') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:my-auto sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        {{ __('Brands') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:my-auto sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        {{ __('Artists') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -83,20 +102,10 @@
                         </form>
                     </x-slot>
                 </x-dropdown>
-                @else
-                <a href="{{ route('login') }}" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-lg text-gray-800 hover:text-white hover:bg-orange-500/70 hover:backdrop-blur">
-                    <div class="me-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-                        </svg>
-                    </div>
-
-                    <div>{{ __('Login') }}</div>
-                </a>
                 @endif
-                <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-xl text-gray-800 hover:text-white hover:bg-orange-500/70 hover:backdrop-blur"
+                <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-xl text-white hover:text-brand-brown hover:bg-white hover:backdrop-blur"
                     @click="$dispatch('open-modal', 'cart')">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                     </svg>
                 </button>
@@ -174,3 +183,39 @@
         @endif
     </div>
 </nav>
+
+<script>
+    function navigation() {
+        return {
+            open: false,
+            atTopOfPage: true,
+            xxx: 20,
+            init() {
+                const self = this;
+                window.addEventListener('scroll', () => {
+                    console.log(self.atTopOfPage)
+                    if (window.scrollY > 0){
+                        if (self.atTopOfPage) self.atTopOfPage = false
+                    } else {
+                        if(!self.atTopOfPage) self.atTopOfPage = true
+                    }
+                });
+            },
+            // handleScroll() {
+            //     setTimeout(() => {
+            //         console.log(this.atTopOfPage)
+            //         this.$dispatch('on-scroll-y', window.scrollY);
+            //         if (window.scrollY > 0){
+            //             if (this.atTopOfPage) this.atTopOfPage = false
+            //         } else {
+            //             if(!this.atTopOfPage) this.atTopOfPage = true
+            //         }
+            //     }, 100)
+            // },
+            // onScrollY(scrollY) {
+            //     console.log(scrollY);
+            //     console.log(this.atTopOfPage)
+            // }
+        }
+    }
+</script>
