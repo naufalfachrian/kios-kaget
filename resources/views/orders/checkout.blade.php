@@ -34,7 +34,8 @@
                         <input type="text" id="subDistrict" name="subDistrict" class="w-full border rounded p-2" x-model="subDistrictQuery"
                                @input="resetSubDistrict"
                                @input.debounce.500="$dispatch('find-sub-district', $el.value)"
-                               @focus="$dispatch('open-dropdown', 'select-sub-district');$dispatch('close-dropdown', 'select-postal-code')">
+                               @focus="$dispatch('open-dropdown', 'select-sub-district');$dispatch('close-dropdown', 'select-postal-code')"
+                               @blur="$dispatch('close-dropdown', 'select-sub-district')">
                         <x-dropdown-select-sub-district class="relative" name="select-sub-district" max="80"></x-dropdown-select-sub-district>
                     </div>
                 </div>

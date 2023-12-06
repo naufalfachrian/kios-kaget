@@ -60,6 +60,7 @@
              @keydown.escape="$dispatch('close-dropdown', 'select-tags')">
             <input type="text" id="tags" class="w-full border rounded p-2"
                    @focus="$dispatch('open-dropdown', 'select-tags')"
+                   @blur="$dispatch('close-dropdown', 'select-tags')"
                    @input.debounce.500="$dispatch('find-tag', $el.value)"
                    @input="$dispatch('clear-dropdown', 'select-tags');"
                    placeholder="Find tags">
