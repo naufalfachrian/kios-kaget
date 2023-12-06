@@ -14,6 +14,9 @@ export default {
             fontFamily: {
                 sans: ['Gabarito', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                'brand-brown': '#9a0d09',
+            }
         },
     },
 
