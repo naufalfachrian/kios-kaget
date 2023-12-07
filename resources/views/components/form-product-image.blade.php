@@ -31,7 +31,7 @@
             <div class="mb-4">
                 <label for="image_file" class="block text-gray-700 text-sm font-bold mb-2">Upload Image
                     *</label>
-                <input type="file" accept="image/jpeg" id="image_file" name="image_file" x-ref="image_file"
+                <input type="file" accept="image/*" id="image_file" name="image_file" x-ref="image_file"
                        class="w-full border rounded p-2" @change="reloadPreview()">
             </div>
         </div>
