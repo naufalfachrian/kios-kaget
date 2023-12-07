@@ -1,5 +1,5 @@
 <x-app-layout>
-    @if(str_contains(Route::currentRouteName(), 'products.'))
+    @if(Auth::check() && Auth()->user()->hasPermission('PRODUCT_MASTER'))
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Products') }}
@@ -28,6 +28,7 @@
                 @include('products.partials.list', ['products' => $products])
             </div>
         </div>
+        @if(Auth::check() && Auth()->user()->hasPermission('PRODUCT_MASTER'))
         <x-modal name="confirm-product-deletion" focusable>
             <form method="post" x-ref="form" class="p-6" :action="action">
                 @csrf
@@ -52,6 +53,7 @@
                 </div>
             </form>
         </x-modal>
+        @endif
     </div>
 
     <script>

@@ -13,7 +13,7 @@
             @endif
         >
             <div class="bg-white shadow sm:rounded-lg relative overflow-hidden">
-                @if(str_contains(Route::currentRouteName(), 'products.'))
+                @if(Auth::check() && Auth()->user()->hasPermission('PRODUCT_MASTER'))
                     <div class="absolute right-0 top-0 mt-2 me-2 gap-1.5 flex">
                         <button class="shadow-lg hover:shadow bg-red-500/60 backdrop-blur-xl hover:bg-red-600/80 p-2 rounded-lg text-white"
                                 x-on:click.prevent="$dispatch('open-modal', 'confirm-product-deletion'); confirmDeleteProduct({{json_encode($product)}}); action = '{{ route('products.destroy', ['product' => $product->id]) }}'">
