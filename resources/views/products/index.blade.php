@@ -15,7 +15,7 @@
     @endif
 
     <div class="py-12" x-data="deleteProductForm()" x-init="flashMessage()">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 gap-4 flex flex-row">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 gap-4 flex flex-col">
             <div class="basis-1/6 hidden">
                 @include('products.partials.filter', ['tagGroups' => $tagGroups])
             </div>
