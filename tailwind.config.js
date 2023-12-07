@@ -16,7 +16,9 @@ export default {
             },
             colors: {
                 'brand-brown': '#9a0d09',
-                'brand-black': '#2b2a4c'
+                'brand-black': '#2b2a4c',
+                'brand-light': '#eee2de',
+                'brand-yellow': '#ea906c'
             }
         },
     },
