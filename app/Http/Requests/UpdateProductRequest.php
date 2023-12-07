@@ -26,7 +26,7 @@ class UpdateProductRequest extends FormRequest
         return [
             'name' => 'required|string',
             'price' => 'required|numeric|min:0',
-            'description' => 'string',
+            'description' => '',
             'weight_in_grams' => 'required|numeric|min:0',
         ];
     }
