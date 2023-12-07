@@ -29,6 +29,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::resource('products', ProductController::class);
 Route::resource('orders', OrderController::class);
 
 Route::middleware('auth')->group(function () {
@@ -36,7 +37,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/tags/search', [TagController::class, 'search'])->name('tags.search');
-    Route::resource('products', ProductController::class);
     Route::resource('product-images', ProductImageController::class);
     Route::resource('tags', TagController::class);
     Route::resource('tag-groups', TagGroupController::class);
