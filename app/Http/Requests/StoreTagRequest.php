@@ -27,7 +27,7 @@ class StoreTagRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'tag_group_id' => 'nullable|exists:tag_groups,id',
+            'tag_group_id' => 'exists:tag_groups,id',
         ];
     }
 }
