@@ -42,7 +42,7 @@ class TagGroupController extends Controller
         if ($request->expectsJson()) {
             return response()->json($tagGroup, 201);
         }
-        return redirect()->route('tags.index')->with(['success' => [
+        return redirect()->back()->with(['success' => [
             'title' => 'Tag group created!',
             'text' => 'Tag group ' . $tagGroup->name . ' has been created.',
             'color' => 'bg-green-500/60'
@@ -75,7 +75,7 @@ class TagGroupController extends Controller
         if ($request->expectsJson()) {
             return response()->json($tagGroup, 200);
         }
-        return redirect()->route('tags.index')->with(['success' => [
+        return redirect()->back()->with(['success' => [
             'title' => 'Tag group updated!',
             'text' => 'Tag group ' . $tagGroup->name . ' has been updated.',
             'color' => 'bg-green-500/60'
@@ -92,7 +92,7 @@ class TagGroupController extends Controller
         if (request()->expectsJson()) {
             return response()->json($tagGroup, 204);
         }
-        return redirect()->route('tags.index')->with(['success' => [
+        return redirect()->back()->with(['success' => [
             'title' => 'Tag group deleted!',
             'text' => 'Tag group ' . $tagGroup->name . ' has been deleted.',
             'color' => 'bg-green-500/60'

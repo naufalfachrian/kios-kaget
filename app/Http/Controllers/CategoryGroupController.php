@@ -40,7 +40,7 @@ class CategoryGroupController extends Controller
         if ($request->expectsJson()) {
             return response()->json($categoryGroup, 201);
         }
-        return redirect()->route('categories.index')->with(['success' => [
+        return redirect()->back()->with(['success' => [
             'title' => 'Category group created!',
             'text' => 'Category group ' . $categoryGroup->name . ' has been created.',
             'color' => 'bg-green-500/60'
@@ -73,7 +73,7 @@ class CategoryGroupController extends Controller
         if ($request->expectsJson()) {
             return response()->json($categoryGroup, 200);
         }
-        return redirect()->route('categories.index')->with(['success' => [
+        return redirect()->back()->with(['success' => [
             'title' => 'Tag group updated!',
             'text' => 'Tag group ' . $categoryGroup->name . ' has been updated.',
             'color' => 'bg-green-500/60'
@@ -90,7 +90,7 @@ class CategoryGroupController extends Controller
         if (request()->expectsJson()) {
             return response()->json($categoryGroup, 204);
         }
-        return redirect()->route('tags.index')->with(['success' => [
+        return redirect()->back()->with(['success' => [
             'title' => 'Category group deleted!',
             'text' => 'Category group ' . $categoryGroup->name . ' has been deleted.',
             'color' => 'bg-green-500/60'
