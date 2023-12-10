@@ -12,6 +12,11 @@ class Category extends Model
 {
     use HasUuids, HasFactory;
 
+    protected $fillable = [
+        'category_group_id',
+        'name',
+    ];
+
     public function group(): BelongsTo
     {
         return $this->belongsTo(CategoryGroup::class, 'category_group_id');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Partials;
 use App\Models\Product;
 use App\Models\TagGroup;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 
 trait ProductIndex
 {
@@ -22,6 +23,13 @@ trait ProductIndex
             ->orderBy('created_at', 'DESC')
             ->paginate(20);
         $tagGroups = TagGroup::all();
+        if (Auth::check()) {
+            return view('products.admin.index', [
+                'hasFilters' => $hasFilters,
+                'products' => $products,
+                'tagGroups' => $tagGroups,
+            ]);
+        }
         return view('products.index', [
             'hasFilters' => $hasFilters,
             'products' => $products,

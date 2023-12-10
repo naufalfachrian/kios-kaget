@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTagGroupRequest;
+use App\Http\Requests\UpdateTagGroupRequest;
 use App\Models\TagGroup;
-use Illuminate\Http\Request;
 
 class TagGroupController extends Controller
 {
@@ -68,7 +68,7 @@ class TagGroupController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TagGroup $tagGroup)
+    public function update(UpdateTagGroupRequest $request, TagGroup $tagGroup)
     {
         $tagGroup->fill($request->all($tagGroup->getFillable()));
         $tagGroup->save();

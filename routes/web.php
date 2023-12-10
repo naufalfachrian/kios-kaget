@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartDetailController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CategoryGroupController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
@@ -31,6 +33,8 @@ Route::get('/dashboard', function () {
 
 Route::resource('products', ProductController::class);
 Route::resource('orders', OrderController::class);
+Route::resource('categories', CategoryController::class);
+Route::resource('category-groups', CategoryGroupController::class);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

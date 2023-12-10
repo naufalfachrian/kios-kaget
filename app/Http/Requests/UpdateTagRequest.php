@@ -13,9 +13,7 @@ class UpdateTagRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::check() &&
-            Auth::user()->hasPermission(Permission::$ADMINISTRATOR_ACCESS) &&
-            Auth::user()->hasPermission(Permission::$PRODUCT_MASTER);
+        return Auth::check();
     }
 
     /**

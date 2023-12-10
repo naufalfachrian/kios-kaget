@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class StoreTagRequest extends FormRequest
+class StoreCategoryGroupReqeust extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +23,7 @@ class StoreTagRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'tag_group_id' => 'exists:tag_groups,id',
+            'name' => 'required|string'
         ];
     }
 }

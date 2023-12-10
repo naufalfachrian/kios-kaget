@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="py-12 flex flex-col justify-center" x-data="home()" x-init="flashMessage()">
+    <div class="py-12 flex flex-col justify-center" x-data="home()">
         <div id="tags" class="flex flex-col gap-12">
             @foreach ($tagGroups as $tagGroup)
                 <div class="mx-auto flex flex-col">
@@ -40,13 +40,6 @@
     <script>
         function home() {
             return {
-                flashNotification: {!! json_encode(session()->get('success')) ?? 'null' !!},
-                flashMessage() {
-                    setTimeout(() => {
-                        if (this.flashNotification === null) return;
-                        this.$dispatch('push-notification', this.flashNotification);
-                    }, 100)
-                }
             }
         }
     </script>

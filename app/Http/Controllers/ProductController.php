@@ -32,7 +32,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('products.form');
+        return view('products.admin.form');
     }
 
     /**
@@ -78,7 +78,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('products.form', [
+        return view('products.admin.form', [
             'product' => $product,
         ]);
     }

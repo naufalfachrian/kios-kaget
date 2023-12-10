@@ -8,14 +8,14 @@ use App\Models\Tag;
 use App\Models\TagGroup;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TagController extends Controller
 {
 
     public function __construct()
     {
-        $this->authorizeResource(Tag::class);
-        $this->middleware('auth');
+        $this->middleware(['auth'])->except(['index', 'show']);
     }
 
     /**
@@ -24,6 +24,11 @@ class TagController extends Controller
     public function index()
     {
         $tagGroups = TagGroup::query()->orderBy('created_at', 'DESC')->paginate(10);
+        if (Auth::check()) {
+            return view('tags.admin.index', [
+                'tagGroups' => $tagGroups
+            ]);
+        }
         return view('tags.index', [
             'tagGroups' => $tagGroups
         ]);

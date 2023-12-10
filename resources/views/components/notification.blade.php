@@ -23,8 +23,11 @@
             notifications: [],
             checkSessions() {
                 setTimeout(() => {
+                    const success = {!! json_encode(session()->get('success')) ?? 'null' !!};
+                    if (success !== null) {
+                        this.notifications.push(success);
+                    }
                     const errors = JSON.parse('{!! $errors !!}');
-                    console.log(errors)
                     Object.values(errors).every((value) => {
                         this.notifications.push({
                             title: 'Product failed to create!',
@@ -33,6 +36,7 @@
                         });
                         return false;
                     });
+                    console.log(this.notifications);
                 }, 100);
             }
         }

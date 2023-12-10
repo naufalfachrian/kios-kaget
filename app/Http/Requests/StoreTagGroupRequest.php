@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Permission;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,9 +12,7 @@ class StoreTagGroupRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::check() &&
-            Auth::user()->hasPermission(Permission::$ADMINISTRATOR_ACCESS) &&
-            Auth::user()->hasPermission(Permission::$PRODUCT_MASTER);
+        return Auth::check();
     }
 
     /**

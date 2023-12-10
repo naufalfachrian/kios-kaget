@@ -18,7 +18,11 @@ export default {
                 'brand-brown': '#9a0d09',
                 'brand-black': '#2b2a4c',
                 'brand-light': '#eee2de',
-                'brand-yellow': '#ea906c'
+                'brand-yellow': '#ea906c',
+                'brand-white': '#f5f5f5',
+            },
+            maxWidth: {
+                '8xl': '90rem',
             }
         },
     },
