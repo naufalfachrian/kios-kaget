@@ -21,6 +21,9 @@ class CategoryController extends Controller
     public function index()
     {
         $categoryGroups = CategoryGroup::query()->orderBy('created_at', 'DESC')->paginate(10);
+        if (count($categoryGroups) == 0 && request()->get('page', 1) > 1) {
+            return redirect()->route('categories.index');
+        }
         if (Auth::check()) {
             return view('categories.admin.index', [
                 'categoryGroups' => $categoryGroups,

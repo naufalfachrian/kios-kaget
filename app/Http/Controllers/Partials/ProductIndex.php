@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Partials;
 use App\Models\Product;
 use App\Models\TagGroup;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
 trait ProductIndex
 {
-    function productIndex(): View
+    function productIndex(): View|RedirectResponse
     {
         $products = Product::query();
         $hasFilters = false;
@@ -23,6 +24,9 @@ trait ProductIndex
             ->orderBy('created_at', 'DESC')
             ->paginate(20);
         $tagGroups = TagGroup::all();
+        if (count($products) == 0 && request()->get('page', 1) > 1) {
+            return redirect()->route('products.index');
+        }
         if (Auth::check()) {
             return view('products.admin.index', [
                 'hasFilters' => $hasFilters,
