@@ -6,7 +6,7 @@
         <x-admin-product-item :product="$product"></x-admin-product-item>
     @endforeach
 </div>
-<div class="mt-4">
+<div class="pt-4 pb-4">
     {{ $products->onEachSide(5)->links() }}
 </div>
 @endif

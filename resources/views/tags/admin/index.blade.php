@@ -45,7 +45,9 @@
                     </div>
                 @endforeach
             </div>
-            {{ $tagGroups->onEachSide(5)->links() }}
+            <div class="pt-4 pb-4">
+                {{ $tagGroups->onEachSide(5)->links() }}
+            </div>
         @endif
         <x-modal name="form-new-tag-group">
             <x-form-tag-group></x-form-tag-group>

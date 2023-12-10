@@ -45,7 +45,9 @@
                     </div>
                 @endforeach
             </div>
-            {{ $categoryGroups->onEachSide(5)->links() }}
+            <div class="pt-4 pb-4">
+                {{ $categoryGroups->onEachSide(5)->links() }}
+            </div>
         @endif
         <x-modal name="form-new-category-group">
             <x-form-category-group></x-form-category-group>
