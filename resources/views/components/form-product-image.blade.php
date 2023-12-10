@@ -131,9 +131,20 @@
                         'Accept': 'application/json',
                         'x-csrf-token': '{{ csrf_token() }}'
                     }
-                }).then(response => response.json()).then(response => {
-                    this.reset();
-                    this.$dispatch('product-image-stored', response);
+                }).then(response => {
+                    response.json().then(json => {
+                        this.reset();
+                        if (response.status === 201) {
+                            this.$dispatch('product-image-stored', json);
+                        } else {
+                            this.$dispatch('product-image-form-canceled');
+                            this.$dispatch('push-notification', {
+                                title: 'Upload image failed!',
+                                text: json.message,
+                                color: 'bg-red-500/60',
+                            });
+                        }
+                    });
                 });
             },
             patch() {
@@ -153,10 +164,21 @@
                         'Accept': 'application/json',
                         'x-csrf-token': '{{ csrf_token() }}',
                     }
-                }).then(response => response.json()).then(response => {
-                    this.reset();
-                    this.selected = response;
-                    this.$dispatch('product-image-patched', response);
+                }).then(response => {
+                    response.json().then(json => {
+                        this.reset();
+                        if (response.status === 200) {
+                            this.selected = response;
+                            this.$dispatch('product-image-patched', response);
+                        } else {
+                            this.$dispatch('product-image-form-canceled');
+                            this.$dispatch('push-notification', {
+                                title: 'Upload image failed!',
+                                text: json.message,
+                                color: 'bg-red-500/60',
+                            });
+                        }
+                    })
                 });
             },
             remove() {
