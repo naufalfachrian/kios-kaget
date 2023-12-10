@@ -23,7 +23,9 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tagGroups = TagGroup::query()->orderBy('created_at', 'DESC')->paginate(10);
+        $tagGroups = TagGroup::query()
+            ->orderBy('name')
+            ->paginate(10);
         if (count($tagGroups) == 0 && request()->get('page', 1) > 1) {
             return redirect()->route('tags.index');
         }

@@ -20,7 +20,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categoryGroups = CategoryGroup::query()->orderBy('created_at', 'DESC')->paginate(10);
+        $categoryGroups = CategoryGroup::query()
+            ->orderBy('name')
+            ->paginate(10);
         if (count($categoryGroups) == 0 && request()->get('page', 1) > 1) {
             return redirect()->route('categories.index');
         }
