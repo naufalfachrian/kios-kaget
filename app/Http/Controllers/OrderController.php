@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\ShippingAddress;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -18,6 +19,11 @@ class OrderController extends Controller
      */
     public function index()
     {
+        if (Auth::check()) {
+            return view('orders.admin.index', [
+                'orders' => Order::query()->orderBy('created_at', 'DESC')->paginate(6),
+            ]);
+        }
         return view('orders.checkout');
     }
 
