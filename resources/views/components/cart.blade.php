@@ -55,7 +55,7 @@
                 <span class="text-xl font-semibold">{{ __('Sub Total') }}</span>
                 <span class="text-xl font-semibold ms-auto" x-text="new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(subTotal,)"></span>
             </div>
-            <a href="{{ route('orders.index') }}" class="btn--primary w-full items-center justify-center"
+            <a href="{{ route('orders.index') }}" class="btn--primary w-full items-center justify-center h-14"
                     :class="{'cursor-not-allowed': isSubmitting}"
                     :disabled="isSubmitting">
                 <svg :hidden="isSubmitting" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -69,7 +69,7 @@
                     <path class="opacity-75" fill="currentColor"
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                {{ __('Checkout') }}
+                <span class="text-lg">{{ __('Checkout') }}</span>
             </a>
         </div>
     </template>
