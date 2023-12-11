@@ -14,7 +14,7 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased relative" @if (Auth::guest()) style="background: url('{{ __('/assets/background.jpg') }}'); background-size: 100% auto" @endif>
+    <body class="font-sans antialiased relative" style="background: url('{{ __('/assets/background.jpg') }}'); background-size: 100% auto">
         <div class="min-h-screen">
             @include('layouts.navigation')
 
