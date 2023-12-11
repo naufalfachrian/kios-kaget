@@ -3,18 +3,20 @@
         <div id="tags" class="flex flex-col gap-12">
             @foreach ($tagGroups as $tagGroup)
                 <div class="mx-auto flex flex-col">
-                    <span class="mx-auto text-2xl text-brand-light font-bold">{{ $tagGroup->name }}</span>
+                    <x-product-listing-header class="mx-auto" text="{{ $tagGroup->name }}"></x-product-listing-header>
                     <div class="flex flex-wrap gap-3 mt-4">
                         @foreach ($tagGroup->tags as $tag)
-                            <div class="py-2 px-4 border-2 border-brand-yellow bg-brand-brown rounded-3xl">
-                                <span class="text-brand-light">{{ $tag->name }}</span>
-                            </div>
+                            <a href="{{ route('tags.show', ['tag' => $tag]) }}">
+                                <div class="py-2 px-4 border-2 border-brand-yellow bg-brand-brown rounded-3xl">
+                                    <span class="text-brand-light">{{ $tag->name }}</span>
+                                </div>
+                            </a>
                         @endforeach
                     </div>
                 </div>
             @endforeach
         </div>
-        <span class="mx-auto text-2xl text-brand-light font-bold mt-12">{{ __('Collections') }}</span>
+        <x-product-listing-header class="mx-auto mt-12" text="{{ __('Collections') }}"></x-product-listing-header>
         <div class="flex flex-row w-full justify-center">
             <div id="products" class="grid lg:grid-cols-4 grow max-w-7xl p-4 gap-x-6 gap-y-12">
                 @foreach ($products as $product)

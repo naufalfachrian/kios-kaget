@@ -34,9 +34,7 @@ class TagController extends Controller
                 'tagGroups' => $tagGroups
             ]);
         }
-        return view('tags.index', [
-            'tagGroups' => $tagGroups
-        ]);
+        abort(404);
     }
 
     /**
@@ -70,7 +68,10 @@ class TagController extends Controller
      */
     public function show(Tag $tag)
     {
-        //
+        return view('tags.index', [
+            'products' => $tag->products()->paginate(20),
+            'tag' => $tag,
+        ]);
     }
 
     /**
