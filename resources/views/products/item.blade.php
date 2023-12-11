@@ -45,7 +45,7 @@
                         <h2 class="font-semibold text-3xl text-gray-800 leading-tight mb-4">
                             {{ $product->name }}
                         </h2>
-                        <p class="font-bold text-2xl text-gray-800">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                        <p class="font-bold text-2xl text-gray-800 mb-4">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                         <p class="font-normal text-md text-gray-600">{!! $product->description !!}</p>
                         <hr class="border-gray-200 my-6"/>
                         <x-add-to-cart :product="$product" class=""></x-add-to-cart>
