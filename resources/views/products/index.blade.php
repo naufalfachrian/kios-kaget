@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="py-12" x-data="deleteProductForm()">
+    <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 gap-4 flex flex-col">
             <div class="basis-1/6 hidden">
                 @include('products.partials.filter', ['tagGroups' => $tagGroups])
@@ -10,7 +10,7 @@
                         <span class="text-sm">Results are filtered. <a href="{{ route(request()->route()->getName()) }}" class="text-blue-500">Remove filter</a>.</span>
                     </div>
                 @endif
-                @include('products.partials.list', ['products' => $products])
+                <x-product-listing title="{{ __('All Collections') }}" :products="$products"></x-product-listing>
             </div>
         </div>
     </div>
