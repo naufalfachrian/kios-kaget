@@ -38,6 +38,12 @@
                                     <x-heroicons-squares-2x2 class="w-5 h-5"></x-heroicons-squares-2x2>
                                 </x-slot>
                             </x-nav-link-admin-pane>
+                            <x-nav-link-admin-pane link="{{ route('orders.index') }}" label="{{ __('Orders') }}"
+                                                   selected="{{ str_contains(Route::currentRouteName(), 'orders') }}">
+                                <x-slot name="icon">
+                                    <x-heroicons-shopping-bag class="w-5 h-5"></x-heroicons-shopping-bag>
+                                </x-slot>
+                            </x-nav-link-admin-pane>
                         </x-admin-nav>
                     </div>
                     <div class="lg:pl-[19.5rem]">
