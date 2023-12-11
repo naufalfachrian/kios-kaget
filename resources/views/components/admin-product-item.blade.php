@@ -23,7 +23,7 @@
         @if (count($product->tags) > 0)
             <div class="flex flex-wrap justify-start gap-0.5">
                 @foreach ($product->tags as $tag)
-                    <span class="bg-green-100 text-xs p-1 rounded-md whitespace-nowrap">{{ $tag->name }}</span>
+                    <span class="bg-brand-light text-xs p-1 rounded-md whitespace-nowrap text-brand-black">{{ $tag->name }}</span>
                 @endforeach
             </div>
         @endif
