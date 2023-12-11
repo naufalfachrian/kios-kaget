@@ -3,8 +3,8 @@
 <div class="bg-white shadow sm:rounded-lg relative overflow-hidden">
     @if(Auth()->user()->hasPermission('PRODUCT_MASTER'))
         <x-admin-item-button
-            edit="$dispatch('edit-product', JSON.parse('{!! json_encode($product) !!}'));"
-            delete="$dispatch('confirm-delete-product', JSON.parse('{!! json_encode($product) !!}'));"
+            edit="$dispatch('edit-product', {id: '{{ $product->id }}', name: '{{ $product->name }}'});"
+            delete="$dispatch('confirm-delete-product', {id: '{{ $product->id }}', name: '{{ $product->name }}'});"
         >
         </x-admin-item-button>
     @endif
