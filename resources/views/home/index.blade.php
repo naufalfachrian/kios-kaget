@@ -18,17 +18,7 @@
         <div class="flex flex-row w-full justify-center">
             <div id="products" class="grid lg:grid-cols-4 grow max-w-7xl p-4 gap-x-6 gap-y-12">
                 @foreach ($products as $product)
-                    <a href="{{ route('products.show', ['product' => $product->id]) }}">
-                        <div class="flex flex-col">
-                            <div class="w-full aspect-square rounded-xl shadow-md shadow-brand-black/20 overflow-hidden">
-                                @if (count($product->images) > 0)
-                                    <img class="" src="{{$product->images[0]->image_url}}"/>
-                                @endif
-                            </div>
-                            <span class="text-lg font-bold text-brand-light">{{ $product->name }}</span>
-                            <span class="text-md font-medium text-brand-light">{{ $product->formattedPrice() }}</span>
-                        </div>
-                    </a>
+                <x-product-item :product="$product"></x-product-item>
                 @endforeach
             </div>
         </div>
