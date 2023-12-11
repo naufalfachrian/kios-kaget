@@ -69,7 +69,10 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        return view('categories.show', [
+            'products' => $category->products()->paginate(20),
+            'category' => $category,
+        ]);
     }
 
     /**

@@ -9,7 +9,9 @@
         </div>
     </a>
     @if (isset($product->category))
-        <span class="text-sm font-normal text-brand-light">{{ $product->category->name }}</span>
+        <a href="{{ route('categories.show', ['category' => $product->category]) }}">
+            <span class="text-sm font-normal text-brand-light">{{ $product->category->name }}</span>
+        </a>
     @endif
     <a href="{{ route('products.show', ['product' => $product->id]) }}">
         <span class="text-lg font-bold text-brand-light">{{ $product->name }}</span>
