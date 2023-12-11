@@ -68,7 +68,7 @@ class TagController extends Controller
      */
     public function show(Tag $tag)
     {
-        return view('tags.index', [
+        return view('tags.show', [
             'products' => $tag->products()->paginate(20),
             'tag' => $tag,
         ]);
