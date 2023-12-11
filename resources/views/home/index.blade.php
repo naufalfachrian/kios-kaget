@@ -7,7 +7,7 @@
                     <div class="flex flex-wrap gap-3 mt-4">
                         @foreach ($tagGroup->tags as $tag)
                             <a href="{{ route('tags.show', ['tag' => $tag]) }}">
-                                <div class="py-2 px-4 border-2 border-brand-yellow bg-brand-brown rounded-3xl">
+                                <div class="py-2 px-4 border-2 border-brand-yellow bg-brand-brown rounded-3xl hover:bg-brand-brown/60">
                                     <span class="text-brand-light">{{ $tag->name }}</span>
                                 </div>
                             </a>
