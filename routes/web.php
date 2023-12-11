@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('homepage');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return redirect()->route('products.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::resource('products', ProductController::class);
