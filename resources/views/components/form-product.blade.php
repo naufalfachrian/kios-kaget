@@ -165,12 +165,9 @@
                 }).then(response => {
                     this.isSubmitting = false;
                     if (response.status === 201) {
-                        while (this.productImages.length) {
-                            this.productImages.pop();
-                        }
-                        while (this.tags.length) {
-                            this.tags.pop();
-                        }
+                        this.clearProductImages();
+                        this.clearTags();
+                        this.clearCategory();
                         this.resetProductImageForm();
                         this.$refs.productForm.reset();
                         response.json().then(product => {
@@ -244,6 +241,22 @@
             },
             categorySelected(selectedCategory) {
                 this.category = selectedCategory;
+            },
+            clearProductImages() {
+                while (this.productImages.length) {
+                    this.productImages.pop();
+                }
+            },
+            clearTags() {
+                while (this.tags.length) {
+                    this.tags.pop();
+                }
+            },
+            clearCategory() {
+                this.category = {
+                    id: null,
+                    name: null,
+                }
             }
         }
     }
