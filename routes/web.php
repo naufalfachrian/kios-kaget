@@ -40,11 +40,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/tags/search', [TagController::class, 'search'])->name('tags.search');
     Route::resource('product-images', ProductImageController::class);
     Route::resource('tags', TagController::class);
     Route::resource('tag-groups', TagGroupController::class);
     Route::resource('carts', CartController::class);
+});
+
+Route::prefix('search')->group(function () {
+    Route::get('tags', [TagController::class, 'search'])->name('tags.search');
+    Route::get('categories', [CategoryController::class, 'search'])->name('categories.search');
 });
 
 Route::resource('cart-details', CartDetailController::class);

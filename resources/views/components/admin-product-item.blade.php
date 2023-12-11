@@ -15,6 +15,9 @@
         @endif
     </div>
     <div class="p-2 flex flex-col">
+        @if (isset($product->category))
+        <span class="font-light text-gray-800 text-sm">{{ $product->category->name }}</span>
+        @endif
         <span class="font-light text-gray-800 text-sm">{{ $product->name }}</span>
         <span class="font-semibold text-gray-800 text-md">{{ $product->formattedPrice() }}</span>
         @if (count($product->tags) > 0)

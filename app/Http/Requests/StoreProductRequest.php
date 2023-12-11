@@ -29,6 +29,7 @@ class StoreProductRequest extends FormRequest
             'price' => 'required|numeric|min:0',
             'description' => '',
             'weight_in_grams' => 'required|numeric|min:0',
+            'category_id' => 'required|exists:categories,id'
         ];
     }
 }

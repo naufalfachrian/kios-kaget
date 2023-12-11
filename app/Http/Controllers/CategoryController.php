@@ -6,6 +6,8 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Models\CategoryGroup;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
@@ -109,5 +111,20 @@ class CategoryController extends Controller
             'text' => 'Category ' . $category->name . ' has been deleted.',
             'color' => 'bg-green-500/60'
         ]]);
+    }
+
+    public function search(Request $request): JsonResponse
+    {
+        $size = $request->get('size', 20);
+        $result = Category::query();
+        if ($request->has('query')) {
+            $query = $request->get('query');
+            $result->where('name', 'LIKE', '%'. $query .'%');
+        }
+        return response()->json($result
+            ->with(['group'])
+            ->take($size)
+            ->get()
+        );
     }
 }

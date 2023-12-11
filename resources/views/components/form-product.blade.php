@@ -11,6 +11,7 @@
       @product-image-removed.window="productImageRemoved($event.detail)"
       @product-image-form-canceled.window="productImageFormCanceled()"
       @tag-selected.window="tagSelected($event.detail)"
+      @category-selected.window="categorySelected($event.detail)"
       action="{{ isset($product) ? route('products.update', ['product' => $product->id]) : route('products.store') }}"
       @if (!isset($product)) @submit.prevent="submitProduct()" @else method="post" @endif
       x-ref="productForm">
@@ -65,6 +66,21 @@
                    @input="$dispatch('clear-dropdown', 'select-tags');"
                    placeholder="Find tags">
             <x-dropdown-select-tag class="relative z-50" name="select-tags" max="80"></x-dropdown-select-tag>
+        </div>
+    </div>
+    <div class="mb-4">
+        <label for="category" class="block text-gray-700 text-sm font-bold mb-2">Category *</label>
+        <div @click.away="$dispatch('close-dropdown', 'select-category')"
+             @keydown.escape="$dispatch('close-dropdown', 'select-category')">
+            <input type="text" id="category" name="category_name" class="w-full border rounded p-2"
+                   @focus="$dispatch('open-dropdown', 'select-category')"
+                   @blur="$dispatch('close-dropdown', 'select-category')"
+                   @input.debounce.500="$dispatch('find-category', $el.value)"
+                   @input="$dispatch('clear-dropdown', 'select-category')"
+                   placeholder="Select category"
+                   :value="category.name">
+            <x-dropdown-select-category class="relative z-50" name="select-category" max="20"></x-dropdown-select-category>
+            <input :value="category.id" hidden="" name="category_id">
         </div>
     </div>
     <template x-for="(tag, index) in tags" :key="index">
@@ -125,6 +141,14 @@
             tags: {!! $product->tags !!},
             @else
             tags: [],
+            @endif
+            @if (isset($product) && isset($product->category))
+            category: {!! $product->category !!},
+            @else
+            category: {
+                id: null,
+                name: null,
+            },
             @endif
             isSubmitting: false,
             maskedWeightInGrams: '{!! isset($product) ? number_format($product->weight_in_grams, 1, ',', '') : 0 !!}',
@@ -217,6 +241,9 @@
                 } else {
                     this.tags.push(selectedTag);
                 }
+            },
+            categorySelected(selectedCategory) {
+                this.category = selectedCategory;
             }
         }
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Permission;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -41,6 +42,15 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        $permissionLabels = [Permission::$PRODUCT_MASTER, Permission::$ADMINISTRATOR_ACCESS];
+        foreach ($permissionLabels as $permissionLabel)
+        {
+            $permission = new Permission();
+            $permission->user()->associate($user);
+            $permission->label = $permissionLabel;
+            $permission->save();
+        }
 
         event(new Registered($user));
 

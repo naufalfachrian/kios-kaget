@@ -18,6 +18,7 @@ class Product extends Model
         'price',
         'description',
         'weight_in_grams',
+        'category_id'
     ];
 
     public function images(): HasMany
